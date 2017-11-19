@@ -25,4 +25,6 @@ func main(){
 
 	//无法获取time包中的months变量，因为它是小写字母开头的变量，无法可视
 	//fmt.Println(" months[0]", time.months[0])
+	s1 := "Months"
+	fmt.Println(s1, "swapCase: ", f1(s1))
 }
