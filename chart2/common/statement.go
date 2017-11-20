@@ -3,7 +3,7 @@ package main
 import (
 	"fmt"
 	"unicode"
-	"strconv"
+	"time"
 )
 
 const globalN = 100
@@ -84,16 +84,17 @@ func fibonacciChan(c, quit chan int) {
 			x, y = y, x+y
 		case <-quit:
 			fmt.Println("quit")
+			fmt.Println("fibonacci x :", x)
 			return
 		}
 	}
-	fmt.Println("fibonacci x :", x)
+
 }
 
 func doWithChannel(){
 	c := make(chan int)
 	quit := make(chan int)
-	//produce data
+	//产生数据
 	go func(){
 		for i:= 0; i < 10; i++ {
 			fmt.Println("channel data item ", <- c)
@@ -101,6 +102,7 @@ func doWithChannel(){
 		quit <- 0
 	}()
 	fibonacciChan(c, quit)
+	time.Sleep(time.Second * 3)         //等等goroutine执行完成
 }
 
 func main(){
@@ -123,4 +125,6 @@ func main(){
 	doWithPointer()
 
 	TestNew()
+
+	doWithChannel()
 }
