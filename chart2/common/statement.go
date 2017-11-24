@@ -105,6 +105,67 @@ func doWithChannel(){
 	time.Sleep(time.Second * 3)         //等等goroutine执行完成
 }
 
+func doService1(s1 chan string) {
+	s1 <- "service1 is startup"
+}
+
+func doService2(s2 chan string) {
+	s2 <- "service2 is startup"
+}
+
+func startService(){
+	s1 := make(chan string)
+	s2 := make(chan string)
+	go doService1(s1);
+	go doService2(s2)
+	time.Sleep(time.Second *1)     //等待1秒钟
+	select {
+	case c1 := <- s1 :
+		fmt.Println("service1 : ", c1)
+	case c2 := <- s2 :
+		fmt.Println("service2 :", c2)
+	}
+}
+
+func doDefer(){
+	doDefer1()
+	doDefer2()
+	fmt.Println("doDefer3 :", doDefer3())
+	fmt.Println("doDefer4 :", doDefer4())
+}
+func doDefer1(){
+	for i := 1; i < 5; i++ {
+		defer fmt.Print(i)
+	}
+	fmt.Println("")
+	//输出：4321
+}
+
+func doDefer2(){
+	j := 0
+	defer fmt.Println(j)
+	j++
+	return
+}
+
+func doDefer3() (i int){
+	i = 10
+	defer func() {
+		fmt.Println("the i value before defer : ", i)
+		i++
+	}()
+	return i
+}
+
+func doDefer4() (i int){
+	i = 10
+	defer func() {
+		fmt.Println("the i value before defer : ", i)
+		i++
+	}()
+	return 1
+}
+
 func main(){
 	const localM = 10
 	const i, j = 10, 12
@@ -127,4 +188,7 @@ func main(){
 	TestNew()
 
 	doWithChannel()
+	startService()
+	doDefer()
+
 }
