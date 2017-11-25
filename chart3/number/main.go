@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"math/cmplx"
 )
 
 func doFloat(){
@@ -35,6 +36,21 @@ func doFloat(){
 
 }
 
+func doComplex(){
+	var x complex64 = complex(2, 3) // 2+3i
+	var y complex64 = complex(1, 9) // 1+9i
+	fmt.Println(x*y) // "(-25+21i)"
+	fmt.Println(real(x*y)) // "-25"
+	fmt.Println(imag(x*y)) // "21"
+
+	fmt.Println(12i * 10i) // "(-120+0i)"
+
+	fmt.Println(cmplx.Sqrt(-1)) //复数-1的开方根： "(0+1i)"
+	fmt.Println(cmplx.Exp(2))  //e的2次方："(7.38905609893065+0i)"
+
+}
+
 func main(){
 	doFloat()
+	doComplex()
 }
