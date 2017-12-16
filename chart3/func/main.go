@@ -68,6 +68,16 @@ func doAnonymous2(){
 	fmt.Println("The first number >= 7 is:", numbers[index])
 }
 
+func factorial(x uint) uint { //recursion
+	if x == 0 {
+		return 1
+	}
+	return x * factorial(x-1)
+}
+
+func doRecursion(){
+	fmt.Println("8的阶乘：" , factorial(8))
+}
 
 func main(){
 	doFun()
@@ -75,4 +85,5 @@ func main(){
 	doAnonymous()
 	doAnonymous1()
 	doAnonymous2()
+	doRecursion()
 }
