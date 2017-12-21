@@ -1,11 +1,11 @@
 package main
 
 import (
-	"time"
 	"fmt"
+	"time"
 )
 
-func getStrFormatTime(format string) string{
+func getStrFormatTime(format string) string {
 	// 获取当前的时间
 	currentTime := time.Now()
 
@@ -16,14 +16,14 @@ func getStrFormatTime(format string) string{
 	return strTime
 }
 
-func do4(){
+func do4() {
 	d := []int{5, 7, 13, 17}
 	for i, v := range d {
 		fmt.Printf("index %d ,value:%d \n", i, v)
 	}
 }
 
-func main(){
+func main() {
 	//函数可视
 	getStrFormatTime("2006-01-02 15:04:05.000")
 

@@ -12,12 +12,12 @@ func doTask(s string) {
 	}
 }
 
-func doScheduler1(){
+func doScheduler1() {
 	go doTask("go schedule 1")
 	doTask("schedule 1")
 }
 
-func doScheduler2(){
+func doScheduler2() {
 	doTask("schedule 2")
 	go doTask("go schedule 2")
 }
@@ -26,4 +26,3 @@ func main() {
 	//doScheduler1()
 	doScheduler2()
 }
-

@@ -5,13 +5,13 @@ import (
 	"sort"
 )
 
-func doMap(){
+func doMap() {
 	fmt.Println()
-	fruit := map[string]int {
-		"apple":10,
-		"orange":2,
-		"banana":100,
-		"grape":300,
+	fruit := map[string]int{
+		"apple":  10,
+		"orange": 2,
+		"banana": 100,
+		"grape":  300,
 	}
 	fruit["peach"] = 10
 	fruit["litchi"] = 200
@@ -25,7 +25,7 @@ func doMap(){
 	}
 	//排序keys
 	sort.Strings(keys)
-	for i:=0 ; i < len(keys); i++ {
+	for i := 0; i < len(keys); i++ {
 		fmt.Printf(" %s, quanity: %d\n", keys[i], fruit[keys[i]])
 	}
 
@@ -36,7 +36,7 @@ func doMap(){
 
 }
 
-func compareInt(x, y map[string]int) bool{
+func compareInt(x, y map[string]int) bool {
 	if len(x) != len(y) {
 		return false
 	}
@@ -47,15 +47,15 @@ func compareInt(x, y map[string]int) bool{
 	}
 	return true
 }
-func main(){
+func main() {
 	a := make(map[int]string)
 	a[1] = "张三"
 	a[2] = "李四"
 	fmt.Printf("map a : %v", a)
 
-	b := map[int]string {
-		3:"张瑞",
-		4:"李明",
+	b := map[int]string{
+		3: "张瑞",
+		4: "李明",
 	}
 	fmt.Printf("\nmap b:%v", b)
 	fmt.Printf("\nmap b[3]:%s", b[3]) //map b[3]:张瑞

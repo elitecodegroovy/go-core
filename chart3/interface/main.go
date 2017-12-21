@@ -4,12 +4,12 @@ import (
 	"fmt"
 )
 
-func execInterface(){
+func execInterface() {
 	var a interface{} = []string{"213", "2", "100"}
-	fmt.Printf("a type: %T, value :%v,", a,  a,)
+	fmt.Printf("a type: %T, value :%v,", a, a)
 }
 
-func main(){
+func main() {
 	execInterface()
 
 }

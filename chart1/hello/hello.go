@@ -2,8 +2,7 @@ package hello
 
 import "fmt"
 
-func main(){
+func main() {
 	var obj = "Golang"
 	fmt.Println("Hello,", obj, "!")
 }
-

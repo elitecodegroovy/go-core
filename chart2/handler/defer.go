@@ -2,12 +2,12 @@ package main
 
 import "fmt"
 
-func main(){
+func main() {
 	callF()
 	fmt.Println("main函数正常运行结束")
 }
 
-func callF(){
+func callF() {
 	defer func() {
 		if r := recover(); r != nil {
 			fmt.Println("Recovered in f", r)
@@ -18,7 +18,7 @@ func callF(){
 }
 
 //未知的第三方库，为了防止程序停止运行，需要捕获panic
-func callUnkownF(i int){
+func callUnkownF(i int) {
 	if i > 3 {
 		fmt.Println("Panicking!")
 		panic(fmt.Sprintf("%v", i))

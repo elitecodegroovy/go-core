@@ -1,17 +1,17 @@
 package main
 
 import (
-	"image"
-	"image/png"
-	"os"
-	"encoding/base64"
-	"math/cmplx"
-	"image/color"
 	"bytes"
+	"encoding/base64"
 	"fmt"
+	"image"
+	"image/color"
+	"image/png"
+	"math/cmplx"
+	"os"
 )
 
-func drawMandelbrotImg2File(){
+func drawMandelbrotImg2File() {
 
 	// outputFile is a File type which satisfies Writer interface
 	outputFile, err := os.Create("mandelbrot.png")
@@ -23,7 +23,7 @@ func drawMandelbrotImg2File(){
 	outputFile.Close()
 }
 
-func drawMandelbroImg2HTMLTag(){
+func drawMandelbroImg2HTMLTag() {
 	// In-memory buffer to store PNG image
 	// before we base 64 encode it
 	var buff bytes.Buffer
@@ -41,10 +41,10 @@ func drawMandelbroImg2HTMLTag(){
 	fmt.Println(htmlImage)
 }
 
-func buildRGBA() *image.RGBA{
+func buildRGBA() *image.RGBA {
 	const (
 		xmin, ymin, xmax, ymax = -2, -2, +2, +2
-		width, height = 1024, 1024
+		width, height          = 1024, 1024
 	)
 	img := image.NewRGBA(image.Rect(0, 0, width, height))
 	for py := 0; py < height; py++ {
@@ -59,7 +59,6 @@ func buildRGBA() *image.RGBA{
 	return img
 }
 
-
 func mandelbrot(z complex128) color.Color {
 	const iterations = 200
 	const contrast = 15
@@ -73,8 +72,7 @@ func mandelbrot(z complex128) color.Color {
 	return color.Black
 }
 
-
 func main() {
-	drawMandelbrotImg2File()    //第一种方式呈现：输出到文件
-	drawMandelbroImg2HTMLTag()  //第二种方式呈现：生成HTML图形标签，直接在html文件中嵌入这行代码即可在浏览器中看到图片。
+	drawMandelbrotImg2File()   //第一种方式呈现：输出到文件
+	drawMandelbroImg2HTMLTag() //第二种方式呈现：生成HTML图形标签，直接在html文件中嵌入这行代码即可在浏览器中看到图片。
 }

@@ -5,8 +5,8 @@
 package main
 
 import (
-"fmt"
-"math/rand"
+	"fmt"
+	"math/rand"
 )
 
 const (
@@ -128,7 +128,7 @@ If you stay, your turn score is added to your total score, and play passes to yo
 The first person to reach 100 total points wins.
 
 The score type stores the scores of the current and opposing players, in addition to the points accumulated during the current turn.
- */
+*/
 
 /**
 ----User-defined function types--
@@ -138,14 +138,14 @@ The action type is a function that takes a score and returns the resulting score
 
 If the turn is over, the player and opponent fields in the resulting score should be swapped, as it is now the other player's turn.
 
- */
+*/
 
 /**
 ----Multiple return values--
 Go functions can return multiple values.
 
 The functions roll and stay each return a pair of values. They also match the action type signature. These action functions define the rules of Pig.
- */
+*/
 
 /**
 ----Higher-order functions--
@@ -154,7 +154,7 @@ A function can use other functions as arguments and return values.
 A strategy is a function that takes a score as input and returns an action to perform.
 (Remember, an action is itself a function.)
 
- */
+*/
 
 /**
 ----Function literals and closures--
@@ -162,29 +162,29 @@ Anonymous functions can be declared in Go, as in this example. Function literals
 
 One basic strategy in Pig is to continue rolling until you have accumulated at least k points in a turn, and then stay. The argument k is enclosed by this function literal,
  which matches the strategy type signature.
- */
+*/
 
 /**
 ---Simulating games
 We simulate a game of Pig by calling an action to update the score until one player reaches 100 points. Each action is selected by calling the strategy function associated with the current player.
 
- */
+*/
 
 /**
 ----Simulating a tournament
 The roundRobin function simulates a tournament and tallies wins. Each strategy plays each other strategy gamesPerSeries times
 
- */
+*/
 
 /**
 ----Variadic function declarations
 Variadic functions like ratioString take a variable number of arguments. These arguments are available as a slice inside the function.
 
- */
+*/
 
 /**
 ----Simulation results
 The main function defines 100 basic strategies, simulates a round robin tournament, and then prints the win/loss record of each strategy.
 
 Among these strategies, staying at 25 is best, but the optimal strategy for Pig is much more complex.
- */
+*/

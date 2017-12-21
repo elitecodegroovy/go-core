@@ -2,11 +2,11 @@ package main
 
 import "fmt"
 
-func main(){
+func main() {
 	doArray()
 }
 
-func doArray(){
+func doArray() {
 	var x [5]int             // 定义一个包含5个元素的数值
 	fmt.Println(x[0])        // 输出数组x[0]的值
 	fmt.Println(x[len(x)-1]) // 输出数组最后一个元素的值
@@ -23,7 +23,7 @@ func doArray(){
 
 	var a [5]int = [5]int{0, 1, 2, 3, 4}
 	var b [3]int = [3]int{1, 2}
-	fmt.Println("\n", b[2])       // "0"
+	fmt.Println("\n", b[2])  // "0"
 	fmt.Printf("a[5]:%v", a) //输出数组a
 
 	c := [...]int{0, 1, 2, 3}
@@ -39,26 +39,26 @@ func doArray(){
 
 	d5 := [8]int{0, 1, 2, 3, 4, 5, 6, 7}
 	s1 := d5[2:]
-	fmt.Println("before d5:", d5, ", slice s1:", s1)  //数组和切片共享｛2, 3, 4, 5, 6, 7｝
+	fmt.Println("before d5:", d5, ", slice s1:", s1) //数组和切片共享｛2, 3, 4, 5, 6, 7｝
 	d5[2] = 10
-	fmt.Println("after d5:", d5, ", slice s1:", s1)  //修改数组的值，切片的元素也将会改变，因为它们共享的元素地址相同
+	fmt.Println("after d5:", d5, ", slice s1:", s1) //修改数组的值，切片的元素也将会改变，因为它们共享的元素地址相同
 
-	a1 := [...]int{10,9,8,7,6,5}
+	a1 := [...]int{10, 9, 8, 7, 6, 5}
 	reverseInt(a1[:])
 	fmt.Println(a1) // "[5 6 7 8 9 10]"
 
-	s2 := []int{10,9,8,7,6,5}
+	s2 := []int{10, 9, 8, 7, 6, 5}
 	reverseInt(s2)
-	fmt.Println(s2) // ""
-	fmt.Println("len:" ,  len(s2), ", cap:", cap(s2)) // ""
-	fmt.Printf("%T",  s2)
+	fmt.Println(s2)                                 // ""
+	fmt.Println("len:", len(s2), ", cap:", cap(s2)) // ""
+	fmt.Printf("%T", s2)
 
 	var x1 []int
 	x1 = append(x1, 11)
 	x1 = append(x1, 12, 13)
 	x1 = append(x1, 14, 15, 16)
 	x1 = append(x1, x1...) // append the slice x1
-	fmt.Println(x1) // "[]int[11 12 13 14 15 16 11 12 13 14 15 16]"
+	fmt.Println(x1)        // "[]int[11 12 13 14 15 16 11 12 13 14 15 16]"
 
 	langs := []string{"C", "", "C++", "Golang"}
 	fmt.Printf("%q\n", rmEmpty(langs)) // `["C" "C++" "Golang"]`
@@ -75,7 +75,7 @@ func reverseInt(a []int) {
 	}
 }
 
-func rmEmpty(str []string) []string{
+func rmEmpty(str []string) []string {
 	i := 0
 	for _, s := range str {
 		if s != "" {
@@ -86,7 +86,7 @@ func rmEmpty(str []string) []string{
 	return str[:i]
 }
 
-func rmEmpty2(str []string) []string{
+func rmEmpty2(str []string) []string {
 	result := str[:0]
 	for _, s := range str {
 		if s != "" {
@@ -101,25 +101,25 @@ func stack() {
 	s1 := "BENZ"
 	//push s1
 	stack = append(stack, s1)
-	fmt.Printf("stack: %v \n", stack )
+	fmt.Printf("stack: %v \n", stack)
 	s2 := "tesla model 3"
 	stack = append(stack, s2)
 	//get stack the last element
-	x := stack[len(stack) -1]
-	fmt.Println("x :" , x)
+	x := stack[len(stack)-1]
+	fmt.Println("x :", x)
 
 	// 去除最后一个元素后的stack
 	stack = stack[:len(stack)-1]
-	fmt.Printf("stack[len-1] : %v" , stack)
+	fmt.Printf("stack[len-1] : %v", stack)
 }
 
-func Doslice(){
+func Doslice() {
 	fmt.Println()
 	s := []string{"one", "two", "three", "four"}
 	fmt.Println(rmStr(s, 2)) //删除第二个元素后的切片： [one two four]
 }
 
-func rmStr(slice []string, i int)[]string{
+func rmStr(slice []string, i int) []string {
 	copy(slice[i:], slice[i+1:])
 	return slice[:len(slice)-1]
 }
