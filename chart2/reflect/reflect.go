@@ -247,5 +247,5 @@ func main() {
 
 	callReflectMethod()
 
-	//附近内容，见目录mapstructure
+	//附近内容，见目录mapstructure/copy/walk
 }

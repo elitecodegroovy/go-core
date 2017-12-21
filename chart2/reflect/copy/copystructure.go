@@ -66,7 +66,7 @@ func (c Config) Copy(v interface{}) (interface{}, error) {
 		c.Copiers = Copiers
 	}
 
-	err := reflectwalk.Walk(v, w)
+	err := walk.Walk(v, w)
 	if err != nil {
 		return nil, err
 	}
@@ -114,7 +114,7 @@ type walker struct {
 	useLocks bool
 }
 
-func (w *walker) Enter(l reflectwalk.Location) error {
+func (w *walker) Enter(l walk.Location) error {
 	w.depth++
 
 	// ensure we have enough elements to index via w.depth
@@ -129,7 +129,7 @@ func (w *walker) Enter(l reflectwalk.Location) error {
 	return nil
 }
 
-func (w *walker) Exit(l reflectwalk.Location) error {
+func (w *walker) Exit(l walk.Location) error {
 	locker := w.locks[w.depth]
 	w.locks[w.depth] = nil
 	if locker != nil {
@@ -156,16 +156,16 @@ func (w *walker) Exit(l reflectwalk.Location) error {
 	}
 
 	switch l {
-	case reflectwalk.Array:
+	case walk.Array:
 		fallthrough
-	case reflectwalk.Map:
+	case walk.Map:
 		fallthrough
-	case reflectwalk.Slice:
+	case walk.Slice:
 		w.replacePointerMaybe()
 
 		// Pop map off our container
 		w.cs = w.cs[:len(w.cs)-1]
-	case reflectwalk.MapValue:
+	case walk.MapValue:
 		// Pop off the key and value
 		mv := w.valPop()
 		mk := w.valPop()
@@ -178,7 +178,7 @@ func (w *walker) Exit(l reflectwalk.Location) error {
 			mv = reflect.Zero(m.Elem().Type().Elem())
 		}
 		m.Elem().SetMapIndex(mk, mv)
-	case reflectwalk.ArrayElem:
+	case walk.ArrayElem:
 		// Pop off the value and the index and set it on the array
 		v := w.valPop()
 		i := w.valPop().Interface().(int)
@@ -189,7 +189,7 @@ func (w *walker) Exit(l reflectwalk.Location) error {
 				ae.Set(v)
 			}
 		}
-	case reflectwalk.SliceElem:
+	case walk.SliceElem:
 		// Pop off the value and the index and set it on the slice
 		v := w.valPop()
 		i := w.valPop().Interface().(int)
@@ -200,12 +200,12 @@ func (w *walker) Exit(l reflectwalk.Location) error {
 				se.Set(v)
 			}
 		}
-	case reflectwalk.Struct:
+	case walk.Struct:
 		w.replacePointerMaybe()
 
 		// Remove the struct from the container stack
 		w.cs = w.cs[:len(w.cs)-1]
-	case reflectwalk.StructField:
+	case walk.StructField:
 		// Pop off the value and the field
 		v := w.valPop()
 		f := w.valPop().Interface().(reflect.StructField)
@@ -217,7 +217,7 @@ func (w *walker) Exit(l reflectwalk.Location) error {
 				sf.Set(v)
 			}
 		}
-	case reflectwalk.WalkLoc:
+	case walk.WalkLoc:
 		// Clear out the slices for GC
 		w.cs = nil
 		w.vals = nil
@@ -371,7 +371,7 @@ func (w *walker) Struct(s reflect.Value) error {
 		v = reflect.New(s.Type())
 		reflect.Indirect(v).Set(reflect.ValueOf(dup))
 	} else {
-		// No copier, we copy ourselves and allow reflectwalk to guide
+		// No copier, we copy ourselves and allow walk to guide
 		// us deeper into the structure for copying.
 		v = reflect.New(s.Type())
 	}
@@ -393,7 +393,7 @@ func (w *walker) StructField(f reflect.StructField, v reflect.Value) error {
 	// If PkgPath is non-empty, this is a private (unexported) field.
 	// We do not set this unexported since the Go runtime doesn't allow us.
 	if f.PkgPath != "" {
-		return reflectwalk.SkipEntry
+		return walk.SkipEntry
 	}
 
 	// Push the field onto the stack, we'll handle it when we exit
