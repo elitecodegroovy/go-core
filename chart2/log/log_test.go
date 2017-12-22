@@ -1,5 +1,8 @@
 package logger
 
+//This is a simple log framework.
+//The common standard output.
+//the common standard file output.
 import (
 	"bytes"
 	"fmt"
@@ -11,7 +14,7 @@ import (
 	"testing"
 )
 
-//测试一般日志格式的属性
+//extreme case
 func TestStdLogger(t *testing.T) {
 	logger := NewStdLogger(false, false, false, false, false)
 
@@ -28,19 +31,19 @@ func TestStdLogger(t *testing.T) {
 		t.Fatalf("Expected %t, received %t\n", false, logger.trace)
 	}
 
-	logger1 := NewStdLogger(true, true, false, true, true)
+	logger1 := NewStdLogger(true, true, true, true, true)
 
 	flags1 := logger1.logger.Flags()
 	if !logger1.debug {
 		t.Fatalf("Expected %t, received %t\n", true, logger.debug)
 	}
 
-	if logger.trace {
-		t.Fatalf("Expected %t, received %t\n", false, logger.trace)
-	}
-	logger.logger.Printf("show me the debug info %s, %d", ":input error", flags1)
+	logger.Tracef("show me the debug info %s, %d", ":input error", flags1)
+	//
+	logger.Noticef("show me the debug info %s, %d", ":input error", flags1)
  }
 
+ //Debug trace and time
 func TestStdLoggerWithDebugTraceAndTime(t *testing.T) {
 	logger := NewStdLogger(true, true, true, false, false)
 
@@ -58,6 +61,7 @@ func TestStdLoggerWithDebugTraceAndTime(t *testing.T) {
 	}
 }
 
+// func Logger notice
 func TestStdLoggerNotice(t *testing.T) {
 	expectOutput(t, func() {
 		logger := NewStdLogger(false, false, false, false, false)
@@ -65,6 +69,7 @@ func TestStdLoggerNotice(t *testing.T) {
 	}, "[INF] foo\n")
 }
 
+// func Logger notice with color
 func TestStdLoggerNoticeWithColor(t *testing.T) {
 	expectOutput(t, func() {
 		logger := NewStdLogger(false, false, false, true, false)
@@ -72,20 +77,21 @@ func TestStdLoggerNoticeWithColor(t *testing.T) {
 	}, "[\x1b[32mINF\x1b[0m] foo\n")
 }
 
+// func Logger debug
 func TestStdLoggerDebug(t *testing.T) {
 	expectOutput(t, func() {
 		logger := NewStdLogger(false, true, false, false, false)
 		logger.Debugf("foo %s", "bar")
 	}, "[DBG] foo bar\n")
 }
-
+// func Logger without debug
 func TestStdLoggerDebugWithOutDebug(t *testing.T) {
 	expectOutput(t, func() {
 		logger := NewStdLogger(false, false, false, false, false)
 		logger.Debugf("foo")
 	}, "")
 }
-
+// func Logger trace
 func TestStdLoggerTrace(t *testing.T) {
 	expectOutput(t, func() {
 		logger := NewStdLogger(false, false, true, false, false)
@@ -93,6 +99,7 @@ func TestStdLoggerTrace(t *testing.T) {
 	}, "[TRC] foo\n")
 }
 
+//func trace without debug
 func TestStdLoggerTraceWithOutDebug(t *testing.T) {
 	expectOutput(t, func() {
 		logger := NewStdLogger(false, false, false, false, false)
@@ -100,14 +107,15 @@ func TestStdLoggerTraceWithOutDebug(t *testing.T) {
 	}, "")
 }
 
+//log file 1
 func TestFileLogger(t *testing.T) {
-	tmpDir, err := ioutil.TempDir("", "_gnatsd")
+	tmpDir, err := ioutil.TempDir("", "_test1")
 	if err != nil {
 		t.Fatal("Could not create tmp dir")
 	}
 	defer os.RemoveAll(tmpDir)
 
-	file, err := ioutil.TempFile(tmpDir, "gnatsd:log_")
+	file, err := ioutil.TempFile(tmpDir, "t_:log_")
 	if err != nil {
 		t.Fatalf("Could not create the temp file: %v", err)
 	}
@@ -128,7 +136,7 @@ func TestFileLogger(t *testing.T) {
 		t.Fatalf("Expected '%s', received '%s'\n", "[INFO] foo", string(buf))
 	}
 
-	file, err = ioutil.TempFile(tmpDir, "gnatsd:log_")
+	file, err = ioutil.TempFile(tmpDir, "t_:log_")
 	if err != nil {
 		t.Fatalf("Could not create the temp file: %v", err)
 	}
@@ -183,3 +191,23 @@ func expectOutput(t *testing.T, f func(), expected string) {
 		t.Fatalf("Expected '%s', received '%s'\n", expected, out)
 	}
 }
+
+//created the log file with debug pattern
+func TestNewFileWithSpecifiedFileName(t *testing.T){
+	file, err := ioutil.TempFile("./", "test1-")
+	if err != nil {
+		t.Fatalf("Could not create the temp file: %v", err)
+	}
+	file.Close()
+
+	logger := NewFileLogger(file.Name(), true, true, true, true)
+	logger.Noticef("Good ! PERFECT")
+}
+
+//created the log file with debug pattern
+func TestNewFileWithHardcodedName(t *testing.T){
+
+	logger := NewFileLogger("test--1.log", true, true, true, true)
+	logger.Noticef("Good ! PERFECT")
+}
+
