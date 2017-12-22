@@ -4,7 +4,7 @@ package logger
 
 import (
 	"fmt"
-	"github.com/elitecodegroovy/go-core/chart2/log"
+	"log"
 	"os"
 )
 
