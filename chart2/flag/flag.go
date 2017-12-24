@@ -18,7 +18,7 @@ func doBasicFlag(){
 	fmt.Println("-n=", *numberPtr)
 	fmt.Println("-log=", *boolPtr)
 	fmt.Println("-logpath=", logPath)
-	
+
 	for i, a := range flag.Args(){
 		fmt.Printf(" arg[%d]: %s", i, a)
 	}
