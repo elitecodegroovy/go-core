@@ -1,8 +1,8 @@
 package hiya
 
 /*
-#cgo CFLAGS: -I/Users/chris/go/src/hiya
-#cgo LDFLAGS: -L/Users/chris/go/src/hiya -lhiya
+#cgo CFLAGS: -I/opt/goapp/src/github.com/elitecodegroovy/go-core/chart2/cgo/clib/hiya
+#cgo LDFLAGS: -L/opt/goapp/src/github.com/elitecodegroovy/go-core/chart2/cgo/clib/hiya -lhiya
 #include "hiya.h"
 */
 import "C"
