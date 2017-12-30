@@ -1,11 +1,11 @@
 package main
 
 import (
-	"time"
 	"fmt"
+	"time"
 )
 
-func doOptsOfTime(){
+func doOptsOfTime() {
 	// get current timestamp
 	currentTime := time.Now().Local()
 
@@ -33,6 +33,6 @@ func doOptsOfTime(){
 	fmt.Println("time :", time)
 }
 
-func main(){
+func main() {
 	doOptsOfTime()
 }
