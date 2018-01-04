@@ -31,7 +31,7 @@ func benchmarkStrConcat(b *testing.B, numConcat int) {
 
 	var ns string
 	for i := 0; i < b.N; i++ {
-		next := nextString()
+		next := nextNumString()
 		ns = ""
 		for u := 0; u < numConcat; u++ {
 			ns += next()
@@ -61,82 +61,6 @@ func BenchmarkStrConcat5000(b *testing.B) {
 }
 
 
-// benchmarkByteSlice provides a benchmark for the time it takes
-// to repeatedly append returned strings to a byte slice, and
-// finally casting the byte slice to string type.
-func benchmarkByteSlice(b *testing.B, numConcat int) {
-	// Reports memory allocations
-	b.ReportAllocs()
-
-	var ns string
-	for i := 0; i < b.N; i++ {
-		next := nextString()
-		b := []byte{}
-		for u := 0; u < numConcat; u++ {
-			b = append(b, next()...)
-		}
-		ns = string(b)
-	}
-	global = ns
-}
-
-
-
-// benchmarkByteSlice provides a benchmark for the time it takes
-// to repeatedly append returned strings to a byte slice, and
-// finally casting the byte slice to string type.
-func benchmarkByteSliceSize(b *testing.B, numConcat int) {
-	// Reports memory allocations
-	b.ReportAllocs()
-
-	var ns string
-	for i := 0; i < b.N; i++ {
-		next := nextString()
-		b := make([]byte, 0, numConcat*10)
-		for u := 0; u < numConcat; u++ {
-			b = append(b, next()...)
-		}
-		ns = string(b)
-	}
-	global = ns
-}
-
-func BenchmarkByteSliceSize10(b *testing.B) {
-	benchmarkByteSliceSize(b, 10)
-}
-func BenchmarkByteSliceSize100(b *testing.B) {
-	benchmarkByteSliceSize(b, 100)
-}
-func BenchmarkByteSliceSize500(b *testing.B) {
-	benchmarkByteSliceSize(b, 500)
-}
-func BenchmarkByteSliceSize1000(b *testing.B) {
-	benchmarkByteSliceSize(b, 1000)
-}
-func BenchmarkByteSliceSize5000(b *testing.B) {
-	benchmarkByteSliceSize(b, 5000)
-}
-
-// benchmarkJoin provides a benchmark for the time it takes to set
-// up an array with strings, and calling strings.Join on that array
-// to get a fully concatenated string.
-func benchmarkJoin(b *testing.B, numConcat int) {
-	// Reports memory allocations
-	b.ReportAllocs()
-
-	var ns string
-	for i := 0; i < b.N; i++ {
-		next := nextString()
-		a := []string{}
-		for u := 0; u < numConcat; u++ {
-			a = append(a, next())
-		}
-		ns = strings.Join(a, "")
-	}
-	global = ns
-}
-
-
 // benchmarkJoinSize provides a benchmark for the time it takes to set
 // up an array with strings, and calling strings.Join on that array
 // to get a fully concatenated string – when the (approximate) number of
@@ -150,7 +74,7 @@ func benchmarkJoinSize(b *testing.B, numConcat int) {
 
 	var ns string
 	for i := 0; i < b.N; i++ {
-		next := nextString()
+		next := nextNumString()
 		a := make([]string, 0, numConcat)
 		for u := 0; u < numConcat; u++ {
 			a = append(a, next())
@@ -176,23 +100,6 @@ func BenchmarkJoinSize5000(b *testing.B) {
 	benchmarkJoinSize(b, 5000)
 }
 
-// benchmarkBufferString
-func benchmarkBufferString(b *testing.B, numConcat int) {
-	// Reports memory allocations
-	b.ReportAllocs()
-
-	var ns string
-	for i := 0; i < b.N; i++ {
-		next := nextString()
-		buffer := bytes.NewBufferString("")
-		for u := 0; u < numConcat; u++ {
-			buffer.WriteString(next())
-		}
-		ns = buffer.String()
-	}
-	global = ns
-}
-
 
 
 func benchmarkBufferSize(b *testing.B, numConcat int) {
@@ -201,7 +108,7 @@ func benchmarkBufferSize(b *testing.B, numConcat int) {
 
 	var ns string
 	for i := 0; i < b.N; i++ {
-		next := nextString()
+		next := nextNumString()
 		buffer := bytes.NewBuffer(make([]byte, 0, numConcat*10))
 		for u := 0; u < numConcat; u++ {
 			buffer.WriteString(next())
