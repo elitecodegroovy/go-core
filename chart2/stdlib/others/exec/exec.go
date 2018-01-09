@@ -1,14 +1,14 @@
 package main
 
 import (
-	"os/exec"
-	"os"
-	"fmt"
 	"bytes"
+	"fmt"
+	"os"
+	"os/exec"
 	"time"
 )
 
-func EchoStr(){
+func EchoStr() {
 	output, err := exec.Command("echo", "Executing a command in Go").CombinedOutput()
 	if err != nil {
 		os.Stderr.WriteString(err.Error())
@@ -17,7 +17,7 @@ func EchoStr(){
 
 }
 
-func GoEnv(){
+func GoEnv() {
 	cmd := exec.Command("go", "env")
 	cmdOutput := &bytes.Buffer{}
 	cmd.Stdout = cmdOutput
@@ -28,7 +28,7 @@ func GoEnv(){
 	fmt.Print(string(cmdOutput.Bytes()))
 }
 
-func excuAsync(){
+func excuAsync() {
 	cmd := exec.Command("cat", "/dev/random")
 	randomBytes := &bytes.Buffer{}
 	cmd.Stdout = randomBytes
@@ -65,12 +65,8 @@ func excuAsync(){
 	fmt.Printf("Result: %d\n", []byte(fmt.Sprintf("%d bytes generated", len(randomBytes.Bytes()))))
 }
 
-
-func main(){
+func main() {
 	//EchoStr()   // Only work on linux platform
 	GoEnv()
-	excuAsync()  // Only work on linux platform
+	excuAsync() // Only work on linux platform
 }
-
-
-

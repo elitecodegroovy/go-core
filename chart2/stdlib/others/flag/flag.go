@@ -5,7 +5,7 @@ import (
 	"fmt"
 )
 
-func doBasicFlag(){
+func doBasicFlag() {
 	versionPtr := flag.String("v", "1.9.2", " v version info")
 	numberPtr := flag.Int("n", 1, "n parameter the concurrent times")
 	boolPtr := flag.Bool("log", false, "log whether or not print log info ")
@@ -19,12 +19,12 @@ func doBasicFlag(){
 	fmt.Println("-log=", *boolPtr)
 	fmt.Println("-logpath=", logPath)
 
-	for i, a := range flag.Args(){
+	for i, a := range flag.Args() {
 		fmt.Printf(" arg[%d]: %s", i, a)
 	}
 }
 
-func main(){
+func main() {
 	doBasicFlag()
 	//>go build -o flag.exe
 	//>flag.exe -v=2.0 -n=10 -log=true -logpath="D:\githubRepo\go\goapp>" a1 a2 a3

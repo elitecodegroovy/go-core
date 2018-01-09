@@ -1,4 +1,3 @@
-
 //Package logger provides logging facilities for the web server
 package logger
 

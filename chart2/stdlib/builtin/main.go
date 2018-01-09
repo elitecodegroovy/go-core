@@ -1,12 +1,11 @@
 package main
 
 import (
-	"log"
 	"errors"
+	"log"
 )
 
-
-func builtin(){
+func builtin() {
 	//1 builtin func make
 	//builtin make function created byte type slice.with default slice length 10
 	slice1 := make([]byte, 10)
@@ -28,7 +27,6 @@ func builtin(){
 	log.Printf("buffered channel: %v, type: %T, len: %d, cap: %d",
 		buffered, buffered, len(buffered), cap(buffered))
 
-
 	//2 builtin func new
 	num := new(int)
 	log.Printf("num type: %T, num: %v, *num: %v", num, num, *num)
@@ -36,7 +34,7 @@ func builtin(){
 	others()
 }
 
-func others(){
+func others() {
 	//3 builtin func len
 	ns := []int{1, 2, 3, 4, 5, 6}
 	bs := make([]byte, 10, 100)
@@ -69,14 +67,14 @@ func others(){
 	log.Printf("map: %+v", m)
 
 	//6 builtin func close
-	log.Printf("%d", <- channel)       //100
+	log.Printf("%d", <-channel) //100
 	channel <- 1000
 	close(channel)
-	log.Printf("%d", <- channel)       //600
-	log.Printf("%d", <- channel)       //1000
+	log.Printf("%d", <-channel) //600
+	log.Printf("%d", <-channel) //1000
 	if i, ok := <-channel; ok {
 		log.Printf("index %d, %t: , channel is still open.", i, ok)
-	}else {
+	} else {
 		log.Printf("index %d, %t: , channel is closed..", i, ok)
 	}
 
@@ -109,23 +107,23 @@ func others(){
 	//12 13 builtin func panic/recover
 	var i1, i2 = 100, 0
 	//do a internal panic
-	doRecover(func(){
+	doRecover(func() {
 		log.Printf("i1/i2= %d will cause the panic ", i1/i2)
 	})
 	//call panic func
-	doRecover(func(){
+	doRecover(func() {
 		panic(errors.New("an error occured"))
 	})
 
 	//14 15 builtin func print/println
-	print("Print is useful for bootstrapping and debugging;" ,
+	print("Print is useful for bootstrapping and debugging;",
 		" it is not guaranteed to stay in the language.")
-	println("Spaces are always added between arguments and a newline is appended." ,
-		"Println is useful for bootstrapping and debugging;" ,
-			" it is not guaranteed to stay in the language.")
+	println("Spaces are always added between arguments and a newline is appended.",
+		"Println is useful for bootstrapping and debugging;",
+		" it is not guaranteed to stay in the language.")
 }
 
-func doRecover(f func()){
+func doRecover(f func()) {
 	defer func() {
 		if r := recover(); r != nil {
 			log.Printf("got an error: %v", r)
@@ -135,6 +133,6 @@ func doRecover(f func()){
 	f()
 }
 
-func main(){
+func main() {
 	builtin()
 }

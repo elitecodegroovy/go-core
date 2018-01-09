@@ -19,6 +19,6 @@ func CCallGo() {
 }
 
 //Go makes its functions available to C code through use of a special //export
-func main(){
+func main() {
 	CCallGo()
 }

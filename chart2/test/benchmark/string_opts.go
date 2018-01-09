@@ -11,4 +11,3 @@ func nextNumString() func() string {
 		return strconv.Itoa(n)
 	}
 }
-

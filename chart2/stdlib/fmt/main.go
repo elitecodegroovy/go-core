@@ -1,11 +1,11 @@
 package main
 
 import (
-	"regexp"
 	"fmt"
+	"regexp"
 )
 
-func doVerbs(){
+func doVerbs() {
 	//1 bool verb, string verb, slice verb
 	s := "990aa"
 	isMatched, _ := regexp.MatchString("^[0-9]{3}", s)
@@ -28,13 +28,13 @@ func doVerbs(){
 
 	//3 character verb
 	//数值和字符输出。ascii 编码的值转化为字符 'rune'
-	fmt.Printf("%U，GuangZhou '%c%c'\n",'\u5e7f','\u5e7f','\u5dde')
+	fmt.Printf("%U，GuangZhou '%c%c'\n", '\u5e7f', '\u5e7f', '\u5dde')
 
 	//4 float verb
 	f := 0.006
 	fmt.Printf("|%9.3f|%.2f|%.1e", f, f, f)
 }
 
-func main(){
+func main() {
 	doVerbs()
 }

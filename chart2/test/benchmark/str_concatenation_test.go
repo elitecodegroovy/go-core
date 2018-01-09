@@ -17,7 +17,6 @@ func init() {
 	}
 }
 
-
 var global string
 
 // benchmarkNaiveConcat provides a benchmark for basic built-in
@@ -60,7 +59,6 @@ func BenchmarkStrConcat5000(b *testing.B) {
 	benchmarkStrConcat(b, 5000)
 }
 
-
 // benchmarkJoinSize provides a benchmark for the time it takes to set
 // up an array with strings, and calling strings.Join on that array
 // to get a fully concatenated string – when the (approximate) number of
@@ -99,8 +97,6 @@ func BenchmarkJoinSize1000(b *testing.B) {
 func BenchmarkJoinSize5000(b *testing.B) {
 	benchmarkJoinSize(b, 5000)
 }
-
-
 
 func benchmarkBufferSize(b *testing.B, numConcat int) {
 	// Reports memory allocations

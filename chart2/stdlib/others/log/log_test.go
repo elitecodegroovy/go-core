@@ -41,9 +41,9 @@ func TestStdLogger(t *testing.T) {
 	logger.Tracef("show me the debug info %s, %d", ":input error", flags1)
 	//
 	logger.Noticef("show me the debug info %s, %d", ":input error", flags1)
- }
+}
 
- //Debug trace and time
+//Debug trace and time
 func TestStdLoggerWithDebugTraceAndTime(t *testing.T) {
 	logger := NewStdLogger(true, true, true, false, false)
 
@@ -84,6 +84,7 @@ func TestStdLoggerDebug(t *testing.T) {
 		logger.Debugf("foo %s", "bar")
 	}, "[DBG] foo bar\n")
 }
+
 // func Logger without debug
 func TestStdLoggerDebugWithOutDebug(t *testing.T) {
 	expectOutput(t, func() {
@@ -91,6 +92,7 @@ func TestStdLoggerDebugWithOutDebug(t *testing.T) {
 		logger.Debugf("foo")
 	}, "")
 }
+
 // func Logger trace
 func TestStdLoggerTrace(t *testing.T) {
 	expectOutput(t, func() {
@@ -193,7 +195,7 @@ func expectOutput(t *testing.T, f func(), expected string) {
 }
 
 //created the log file with debug pattern
-func TestNewFileWithSpecifiedFileName(t *testing.T){
+func TestNewFileWithSpecifiedFileName(t *testing.T) {
 	file, err := ioutil.TempFile("./", "test1-")
 	if err != nil {
 		t.Fatalf("Could not create the temp file: %v", err)
@@ -205,9 +207,8 @@ func TestNewFileWithSpecifiedFileName(t *testing.T){
 }
 
 //created the log file with debug pattern
-func TestNewFileWithHardcodedName(t *testing.T){
+func TestNewFileWithHardcodedName(t *testing.T) {
 
 	logger := NewFileLogger("test--1.log", true, true, true, true)
 	logger.Noticef("Good ! PERFECT")
 }
-

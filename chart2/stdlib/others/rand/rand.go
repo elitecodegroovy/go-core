@@ -1,17 +1,17 @@
 package main
 
 import (
+	crand "crypto/rand"
 	"fmt"
+	"math"
+	"math/big"
 	"math/rand"
 	"time"
-	crand "crypto/rand"
-	"math/big"
-	"math"
 )
 
 //rand.Intn返还[0,n)的随机数
 //Seed值固定，那么保证随机数一定固定
-func RandNWithSeed(){
+func RandNWithSeed() {
 	rand.Seed(100)
 	answers := []string{
 		"多得你嘅帮助，好多谢你。",
@@ -50,7 +50,7 @@ func RandNWithSeed(){
 	}
 }
 
-func cryptoRand(){
+func cryptoRand() {
 	//生成质数
 	for n := 2; n < 10; n++ {
 		p, err := crand.Prime(crand.Reader, n)
@@ -70,7 +70,7 @@ func cryptoRand(){
 	b := new(big.Int).SetInt64(int64(100000))
 	if i, err := crand.Int(crand.Reader, b); err != nil {
 		fmt.Errorf("Can't generate random value: %v, %v", i, err)
-	}else {
+	} else {
 		fmt.Printf("rand [0, 100000) random value : %d\n", i)
 	}
 
@@ -78,12 +78,12 @@ func cryptoRand(){
 	b1 := new(big.Int).SetInt64(int64(math.MaxInt64))
 	if i1, err := crand.Int(crand.Reader, b1); err != nil {
 		fmt.Errorf("Can't generate random value: %v, %v", i1, err)
-	}else {
+	} else {
 		fmt.Println("rand [0, math.MaxInt64) random value : ", i1)
 	}
 }
 
-func main(){
+func main() {
 	RandNWithSeed()
 	cryptoRand()
 }
