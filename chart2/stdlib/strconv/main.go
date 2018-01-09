@@ -18,7 +18,6 @@ func doFormat(){
 
 	//convert2Str
 	convert2Str()
-	strconv.Quote()
 }
 
 func convert2Str(){
