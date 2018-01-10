@@ -5,6 +5,8 @@ import (
 	"strconv"
 	"encoding/json"
 	"fmt"
+	"bytes"
+	"os"
 )
 
 type Book struct {
@@ -34,6 +36,26 @@ func (p *Person) String() string{
 	}
 }
 
+func DoInterface(){
+	var str fmt.Stringer
+	var t1 time.Time
+	str = t1					    //time.Time拥有String()实现方法
+	fmt.Print("\n t1:", str)
+	str = new(Book)					//Book拥有String()实现方法
+	str = new(bytes.Buffer)			//bytes.Buffer拥有String()实现方法
+
+	//str = new(bytes.Reader)			//无法编译：bytes.Reader没有String()实现方法
+
+	var g interface{}
+	g = 1000
+	g = 10.99
+	g = "generic type"
+	g = map[string]int {"one": 1, "two":2}
+	g = os.Stdout
+	g =  new(time.Timer)
+	fmt.Println("g ", g)
+}
+
 func main(){
 	p := &Person{
 		1000,
@@ -47,4 +69,5 @@ func main(){
 		time.Now(),
 	}
 	fmt.Print("persion: ", p, ", book：", b)
+	DoInterface()
 }
