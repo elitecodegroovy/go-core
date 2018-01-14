@@ -1,3 +1,5 @@
+// +build !windows
+
 #include <stdio.h>
 
 #include "clibrary.h"
