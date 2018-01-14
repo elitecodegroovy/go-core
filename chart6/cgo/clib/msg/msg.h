@@ -1,3 +1,4 @@
+// +build !windows
 typedef struct message_s {
   char message[255];
   int displayed;

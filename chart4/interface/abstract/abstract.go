@@ -54,6 +54,9 @@ func DoInterface(){
 	g = os.Stdout
 	g =  new(time.Timer)
 	fmt.Println("g ", g)
+
+	var t time.Timer
+	fmt.Printf("t type:%T, value:%v", t, t)
 }
 
 func main(){

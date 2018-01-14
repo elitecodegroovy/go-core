@@ -1,9 +1,12 @@
-package hiya
+// +build !windows
+
+//test only on linux OS
+package msg
 
 /*
-#cgo CFLAGS: -I/opt/goapp/src/github.com/elitecodegroovy/go-core/chart2/cgo/clib/hiya
-#cgo LDFLAGS: -L/opt/goapp/src/github.com/elitecodegroovy/go-core/chart2/cgo/clib/hiya -lhiya
-#include "hiya.h"
+#cgo CFLAGS: -I/opt/goapp/src/github.com/elitecodegroovy/go-core/chart6/cgo/clib/msg
+#cgo LDFLAGS: -L/opt/goapp/src/github.com/elitecodegroovy/go-core/chart6/cgo/clib/msg -lmsg
+#include "msg.h"
 */
 import "C"
 
