@@ -1,16 +1,15 @@
-// +build !windows
 
 package main
 
 /*
 #include <stdio.h>
 
-// The gateway function
-int callOnMeGo_cgo(int in)
+// The  gateway function
+int call_c_func_in_go(int in)
 {
-	printf("C.callOnMeGo_cgo(): called with arg = %d\n", in);
-	int callOnMeGo(int);
-	return callOnMeGo(in);
+	printf("Go源码中的C程序，输入参数 %d\n", in);
+	int callGoFunc(int);
+	return callGoFunc(in);
 }
 */
 import "C"
