@@ -3,9 +3,22 @@ package encapsulation
 import (
 	"fmt"
 	"reflect"
+	"strconv"
 )
 
-type Helper struct {}
+type Helper struct {
+	Id		int64
+	Name 	string
+	status  bool
+}
+
+func (h *Helper) SetStatus(b bool){
+	h.status = b
+}
+
+func (h *Helper) GetStatus() bool{
+	return h.status
+}
 
 func (h *Helper) doHelp(who string){
 	fmt.Println("Help "+ who)
@@ -33,4 +46,9 @@ func (h *Helper)DoTask(x interface{}){
 	default:
 		h.doHelp(fmt.Sprint(x))
 	}
+}
+
+func (h *Helper)String() string{
+	return "Id :"+ strconv.FormatInt(h.Id, 10)+
+		", name:"+ h.Name + ", status:"+ strconv.FormatBool(h.status)
 }
