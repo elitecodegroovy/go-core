@@ -1,23 +1,39 @@
 package main
 
 import (
-	"github.com/elitecodegroovy/go-core/chart7/json"
+	js "github.com/elitecodegroovy/go-core/chart7/json"
 	"fmt"
 	"os"
-	"path"
+	"path/filepath"
+	"github.com/kardianos/osext"
+	"log"
 )
 
-func loadDBConfig(pwd string){
-	filename := path.Join(pwd,  "db_config.json" )
+var (
+	// Initialization of the working directory. Needed to load asset files.
+	binaryFilePath = initWorkingDirectory()
+)
+
+func initWorkingDirectory() string {
+	// Get the absolute path this executable is located in.
+	executablePath, err := osext.ExecutableFolder()
+	if err != nil {
+		log.Fatal("Error: Couldn't determine working directory: " + err.Error())
+	}
+	// Set the working directory to the path the executable is located in.
+	os.Chdir(executablePath)
+	return ""
+}
+func loadDBConfig(){
+	fmt.Println("执行文件路径：", binaryFilePath)
+	//使用绝对路径，也可以使用相对路径
+	filename := filepath.Join(binaryFilePath,  "db_config.json" )
 	fmt.Println(filename)
-	fmt.Printf("db_config: %#v", json.LoadConfiguration(filename))
+	fmt.Printf("db_config: %#v", js.LoadConfiguration(filename))
 
 }
 func main(){
-	pwd, _ := os.Getwd()
-	fmt.Println("path:", pwd)
-
-	loadDBConfig(pwd)
+	loadDBConfig()
 }
 
-//https://www.kaihag.com/external-assets-working-directories-and-go/
+//
