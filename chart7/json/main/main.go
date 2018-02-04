@@ -8,6 +8,7 @@ import (
 	"github.com/kardianos/osext"
 	"log"
 	"flag"
+	"time"
 )
 
 var (
@@ -40,6 +41,65 @@ func loadDBConfig(){
 	fmt.Printf("配置文件信息: %#v", js.LoadConfiguration(filename))
 
 }
+
+func writeOneStructure(){
+	msg := js.Message{
+		Id: 1,
+		CreatedTime:time.Now().UnixNano(),
+		Msg: "The State of Go1.10",
+
+	}
+	filename := filepath.Join(binaryFilePath ,"oneMsg.json")
+	if b, err := js.WriteFile(msg, filename); err != nil {
+		fmt.Errorf("WriteJson2File error : %s", err.Error())
+	}else {
+		fmt.Println("写入文件" , filename, ",结果：", b)
+	}
+}
+
+func wirteMultipleStructures(){
+	msgs := []js.Message{
+		{
+			Id: 1,
+			CreatedTime:time.Now().UnixNano(),
+			Msg: "The State of Go1.10",
+		},
+		{
+			Id: 2,
+			CreatedTime:time.Now().UnixNano(),
+			Msg: "Go's defer statement",
+		},
+		{
+			Id: 3,
+			CreatedTime:time.Now().UnixNano(),
+			Msg: "Realtime redis channels browser",
+		},
+	}
+	filename := filepath.Join(binaryFilePath , "multipleMsgs.json")
+	if b, err := js.WriteFile(msgs, filename); err != nil {
+		fmt.Errorf("WriteJson2File error : %s", err.Error())
+	}else {
+		fmt.Println("写入文件" , filename, ",结果：", b)
+	}
+}
+
+func writeJson2File(){
+	writeOneStructure()
+	wirteMultipleStructures()
+}
+
+func readJsonFromFile(){
+	const jsonFileName = "multipleMsgs.json"
+	filename := filepath.Join(binaryFilePath , jsonFileName)
+	data , err := js.ReadFile(filename)
+	if err != nil {
+		fmt.Errorf("ReadFile error: %s", err.Error())
+	}
+	fmt.Printf("读取文件%s,内容: %#v", filename, data )
+}
+
 func main(){
-	loadDBConfig()
+	writeJson2File()
+	readJsonFromFile()
+	//loadDBConfig()
 }
