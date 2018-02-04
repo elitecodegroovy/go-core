@@ -15,6 +15,7 @@ var (
 	binaryFilePath = initWorkingDirectory()
 )
 
+//设置工作目录
 func initWorkingDirectory() string {
 	var customPath string
 	// Check if a custom path has been provided by the user.
@@ -36,11 +37,9 @@ func loadDBConfig(){
 	//使用绝对路径，也可以使用相对路径
 	filename := filepath.Join(binaryFilePath,  "db_config.json" )
 	fmt.Println(filename)
-	fmt.Printf("db_config: %#v", js.LoadConfiguration(filename))
+	fmt.Printf("配置文件信息: %#v", js.LoadConfiguration(filename))
 
 }
 func main(){
 	loadDBConfig()
 }
-
-//
