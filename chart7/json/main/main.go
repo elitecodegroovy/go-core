@@ -7,6 +7,7 @@ import (
 	"path/filepath"
 	"github.com/kardianos/osext"
 	"log"
+	"flag"
 )
 
 var (
@@ -15,6 +16,11 @@ var (
 )
 
 func initWorkingDirectory() string {
+	var customPath string
+	// Check if a custom path has been provided by the user.
+	flag.StringVar(&customPath, "custom-path", "",
+		"Specify a custom path to the asset files. This needs to be an absolute path.")
+	flag.Parse()
 	// Get the absolute path this executable is located in.
 	executablePath, err := osext.ExecutableFolder()
 	if err != nil {
@@ -22,7 +28,8 @@ func initWorkingDirectory() string {
 	}
 	// Set the working directory to the path the executable is located in.
 	os.Chdir(executablePath)
-	return ""
+	// Return the user-specified path. Empty string if no path was provided.
+	return customPath
 }
 func loadDBConfig(){
 	fmt.Println("执行文件路径：", binaryFilePath)
