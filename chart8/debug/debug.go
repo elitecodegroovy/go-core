@@ -9,8 +9,11 @@ type XYZ struct {
 }
 
 func main() {
+	var v XYZ
+	fmt.Printf("v 类型：%T, v 值：%#v \n", v, v)
 	a := "abc"
 	b := 3
+
 
 	ms := &XYZ{
 		x: "X Spark",
