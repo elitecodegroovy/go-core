@@ -35,19 +35,6 @@ type Message struct {
 	Msg 		string 		`json:"msg"`
 }
 
-func WriteJson2File(msg Message, filename string)(bool, error) {
-	b, err := json.Marshal(msg)
-	if err != nil {
-		fmt.Println("error:", err)
-		return false, err
-	}
-	if err = ioutil.WriteFile(filename, b, 0644); err != nil {
-		fmt.Errorf("error: %s", err.Error())
-		return false, err
-	}
-	return true , nil
-}
-
 func WriteFile(msg interface{}, filename string)(bool, error) {
 	b, err := json.Marshal(msg)
 	if err != nil {

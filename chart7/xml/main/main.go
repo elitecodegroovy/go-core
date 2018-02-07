@@ -22,15 +22,15 @@ func initWorkingDirectory() string {
 	flag.StringVar(&customPath, "custom-path", "",
 		"Specify a custom path to the asset files. This needs to be an absolute path.")
 	flag.Parse()
-	// Get the absolute path this executable is located in.
-	executablePath, err := osext.ExecutableFolder()
-	if err != nil {
-		log.Fatal("Error: Couldn't determine working directory: " + err.Error())
-	}
-	// Set the working directory to the path the executable is located in.
-	os.Chdir(executablePath)
-	// Return the user-specified path. Empty string if no path was provided.
-	return customPath
+// Get the absolute path this executable is located in.
+executablePath, err := osext.ExecutableFolder()
+if err != nil {
+log.Fatal("Error: Couldn't determine working directory: " + err.Error())
+}
+// Set the working directory to the path the executable is located in.
+os.Chdir(executablePath)
+// Return the user-specified path. Empty string if no path was provided.
+return customPath
 }
 
 var xmlFileName = "companystaffs.xml"
@@ -56,7 +56,6 @@ func readFromXMLFile(){
 	}else {
 		fmt.Printf("成功读取xml文件数据:%#v", r)
 	}
-
 }
 
 func main(){

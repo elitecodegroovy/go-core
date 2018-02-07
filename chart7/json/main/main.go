@@ -33,14 +33,7 @@ func initWorkingDirectory() string {
 	// Return the user-specified path. Empty string if no path was provided.
 	return customPath
 }
-func loadDBConfig(){
-	fmt.Println("执行文件路径：", binaryFilePath)
-	//使用绝对路径，也可以使用相对路径
-	filename := filepath.Join(binaryFilePath,  "db_config.json" )
-	fmt.Println(filename)
-	fmt.Printf("配置文件信息: %#v", js.LoadConfiguration(filename))
 
-}
 
 func writeOneStructure(){
 	msg := js.Message{
@@ -102,4 +95,13 @@ func main(){
 	writeJson2File()
 	readJsonFromFile()
 	//loadDBConfig()
+}
+
+
+func loadDBConfig(){
+	fmt.Println("执行文件路径：", binaryFilePath)
+	//使用绝对路径，也可以使用相对路径
+	filename := filepath.Join(binaryFilePath,  "db_config.json" )
+	fmt.Println(filename)
+	fmt.Printf("配置文件信息: %#v", js.LoadConfiguration(filename))
 }
