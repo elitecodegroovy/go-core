@@ -57,7 +57,7 @@ func LogMethodNotAllowedHandler() http.Handler {
 }
 
 func main() {
-	router := httprouter.New()
+ 	router := httprouter.New()
 	router.HandleMethodNotAllowed = true
 	router.NotFound = LogNotFoundHandler()
 	router.PanicHandler =  LogPanicHandler()

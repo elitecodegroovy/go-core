@@ -1,0 +1,22 @@
+{{define "title"}}技能列表{{end}}
+{{define "content"}}
+<p> <a href="/">首页</a></p>
+<h3>技能列表</h3>
+<table class="table">
+    <thead>
+        <tr>
+            <th>语言</th>
+            <th>级别</th>
+        </tr>
+    </thead>
+    <tbody>
+    {{ range . }}
+        <tr>
+            <td>{{ .Language }}</td>
+            <td>{{ .Level }}</td>
+        </tr>
+    {{ end }}
+    </tbody>
+</table>
+
+{{end}}

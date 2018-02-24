@@ -1,0 +1,11 @@
+{{define "title"}}我的{{end}}
+{{define "content"}}
+<p><a href="/">首页</a></p>
+<h3>作者信息</h3>
+<ul>
+    <li>用户姓名：{{ .Name }} </li>
+    <li>所在城市： {{ .City }}</li>
+    <li>国籍： {{ .Nationality }}</li>
+</ul>
+
+{{end}}
