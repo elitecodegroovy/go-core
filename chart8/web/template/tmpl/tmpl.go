@@ -10,11 +10,15 @@ import (
 	"strings"
 )
 
+//声明全局模板变量
 var templates map[string]*Tmpl
+//声明缓存池类型变量
 var bufpool *bpool.BufferPool
+
+//声明主模板
 var mainTmpl = `{{define "main" }} {{ template "base" . }} {{ end }}`
 
-// create a buffer pool
+// 初始化缓存池
 func init() {
 	bufpool = bpool.NewBufferPool(64)
 	log.Println("缓存bufpool分配成功")
@@ -91,21 +95,17 @@ func RenderTemplate(w http.ResponseWriter, name string, data interface{}) error 
 }
 
 
-// FuncMap is a convenience type that mirrors the FuncMap type in html/template
+// FuncMap 是一个map类型
 type FuncMap template.FuncMap
 
-// HTML is another convenience type that mirrors the HTML type in html/template
-// (http://golang.org/src/html/template/content.go?h=HTML#L120)
+// HTML 字符类型
 type HTML string
 
-// AssetFunc is the function that go-bindata generates to look up a file
-// by name
+//声明函数类型，便于通过名称查询到对应文件内容的切片字节数组
 type AssetFunc func(string) ([]byte, error)
 
-// Must is a helper that wraps a call to a function returning
-// (*Template, error) and panics if the error is non-nil. It is intended for
-// use in variable initializations such as
-//	var t = template.Must(template.New("name").Parse("templates/my.tmpl"))
+// 与template.Must(template.New("name").Parse("templates/my.tmpl"))使用类似，
+// 只是输入参数为自定义类型Tmpl，返回类型也是Tmpl指针。
 func Must(t *Tmpl, err error) *Tmpl {
 	if err != nil {
 		panic(fmt.Sprintf("template error: %s", err))
@@ -116,40 +116,35 @@ func Must(t *Tmpl, err error) *Tmpl {
 	return t
 }
 
-// Template is a wrapper around a Template (from html/template). It reads
-// template file contents from a function instead of the filesystem.
+// 自定义结构Tmpl，是对template的二次组合封装
 type Tmpl struct {
 	AssetFunc AssetFunc
 	tmpl      *template.Template
 }
 
-// New creates a new Template with the given name. It stores
-// the given Asset() function for use later.
-// Example usage:
-//  tmpl := template.New("mytmpl", Asset) //Asset is the function that go-bindata generated for you
+// 创建一个Tmpl结构对象
+//  tmpl := tmpl.New("mytmpl", Asset) //Asset is the function that go-bindata generated for you
 //
 func New(name string, fn AssetFunc) *Tmpl {
 	return &Tmpl{fn, template.New(name)}
 }
 
-// Name gets the name that was passed in the New function
+// 获取模板的名称
 func (t *Tmpl) Name() string {
 	return t.tmpl.Name()
 }
 
-// Funcs is a proxy to the underlying template's Funcs function
+// 代理内部的Funcs模板函数
 func (t *Tmpl) Funcs(funcMap FuncMap) *Tmpl {
 	return t.replaceTmpl(t.tmpl.Funcs(template.FuncMap(funcMap)))
 }
 
-//Delims is a proxy to the underlying template's Delims function
+//代理内部的Delims模版函数
 func (t *Tmpl) Delims(left, right string) *Tmpl {
 	return t.replaceTmpl(t.tmpl.Delims(left, right))
 }
 
-// Parse looks up the filename in the underlying Asset store,
-// then calls the underlying template's Parse function with the result.
-// returns an error if the file wasn't found or the Parse call failed
+// 查找文件名对应的资源，如果没有发现或者分析失败，返回的错误信息error不为nil
 func (t *Tmpl) Parse(filename string) (*Tmpl, error) {
 	tmplBytes, err := t.file(filename)
 	if err != nil {
@@ -162,10 +157,8 @@ func (t *Tmpl) Parse(filename string) (*Tmpl, error) {
 	return t.replaceTmpl(newTmpl), nil
 }
 
-// ParseFiles looks up all of the filenames in the underlying Asset store,
-// concatenates the file contents together, then calls the underlying template's
-// Parse function with the result. returns an error if any of the files
-// don't exist or the underlying Parse call failed.
+// 类似于template包中的ParseFiles，区别在于这个方法是从文件tmpl_data.go中
+//读取数据
 func (t *Tmpl) ParseFiles(filenames ...string) (*Tmpl, error) {
 	fileBytes := []byte{}
 	for _, filename := range filenames {
@@ -182,24 +175,22 @@ func (t *Tmpl) ParseFiles(filenames ...string) (*Tmpl, error) {
 	return t.replaceTmpl(newTmpl), nil
 }
 
-// Execute is a proxy to the underlying template's Execute function
+// 代理执行模板函数Execute
 func (t *Tmpl) Execute(w io.Writer, data interface{}) error {
 	return t.tmpl.Execute(w, data)
 }
 
-// ExecuteTemplate is a proxy to the underlying template's ExecuteTemplate function
+// 代理执行模板函数ExecuteTemplate
 func (t *Tmpl) ExecuteTemplate(wr io.Writer, name string, data interface{}) error {
 	return t.tmpl.ExecuteTemplate(wr, name, data)
 }
 
-// replaceTmpl is a convenience function to replace t.tmpl with the given tmpl
 func (t *Tmpl) replaceTmpl(tmpl *template.Template) *Tmpl {
 	t.tmpl = tmpl
 	return t
 }
 
-// file is a convenience function to look up fileName using t.AssetFunc, then
-// return the contents or an error if the file doesn't exist
+// 通过文件名查看文件的数据
 func (t *Tmpl) file(fileName string) ([]byte, error) {
 	tmplBytes, err := t.AssetFunc(fileName)
 	if err != nil {

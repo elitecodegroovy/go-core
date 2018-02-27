@@ -1,6 +1,5 @@
 package main
 
-
 import (
 	"log"
 	"net/http"
@@ -20,10 +19,6 @@ type Skill struct {
 
 type SkillSets []*Skill
 
-type Configuration struct {
-	LayoutPath  string
-	IncludePath string
-}
 
 
 func homeHandler(w http.ResponseWriter, r *http.Request) {
