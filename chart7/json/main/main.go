@@ -1,13 +1,13 @@
 package main
 
 import (
-	js "github.com/elitecodegroovy/go-core/chart7/json"
+	"flag"
 	"fmt"
-	"os"
-	"path/filepath"
+	js "github.com/elitecodegroovy/go-core/chart7/json"
 	"github.com/kardianos/osext"
 	"log"
-	"flag"
+	"os"
+	"path/filepath"
 	"time"
 )
 
@@ -34,74 +34,71 @@ func initWorkingDirectory() string {
 	return customPath
 }
 
-
-func writeOneStructure(){
+func writeOneStructure() {
 	msg := js.Message{
-		Id: 1,
-		CreatedTime:time.Now().UnixNano(),
-		Msg: "The State of Go1.10",
-
+		Id:          1,
+		CreatedTime: time.Now().UnixNano(),
+		Msg:         "The State of Go1.10",
 	}
-	filename := filepath.Join(binaryFilePath ,"oneMsg.json")
+	filename := filepath.Join(binaryFilePath, "oneMsg.json")
 	if b, err := js.WriteFile(msg, filename); err != nil {
 		fmt.Errorf("WriteJson2File error : %s", err.Error())
-	}else {
-		fmt.Println("写入文件" , filename, ",结果：", b)
+	} else {
+		fmt.Println("写入文件", filename, ",结果：", b)
 	}
 }
 
-func wirteMultipleStructures(){
+func wirteMultipleStructures() {
 	msgs := []js.Message{
 		{
-			Id: 1,
-			CreatedTime:time.Now().UnixNano(),
-			Msg: "The State of Go1.10",
+			Id:          1,
+			CreatedTime: time.Now().UnixNano(),
+			Msg:         "The State of Go1.10",
 		},
 		{
-			Id: 2,
-			CreatedTime:time.Now().UnixNano(),
-			Msg: "Go's defer statement",
+			Id:          2,
+			CreatedTime: time.Now().UnixNano(),
+			Msg:         "Go's defer statement",
 		},
 		{
-			Id: 3,
-			CreatedTime:time.Now().UnixNano(),
-			Msg: "Realtime redis channels browser",
+			Id:          3,
+			CreatedTime: time.Now().UnixNano(),
+			Msg:         "Realtime redis channels browser",
 		},
 	}
-	filename := filepath.Join(binaryFilePath , "multipleMsgs.json")
+	filename := filepath.Join(binaryFilePath, "multipleMsgs.json")
 	if b, err := js.WriteFile(msgs, filename); err != nil {
 		fmt.Errorf("WriteJson2File error : %s", err.Error())
-	}else {
-		fmt.Println("写入文件" , filename, ",结果：", b)
+	} else {
+		fmt.Println("写入文件", filename, ",结果：", b)
 	}
 }
 
-func writeJson2File(){
+func writeJson2File() {
 	writeOneStructure()
 	wirteMultipleStructures()
 }
 
-func readJsonFromFile(){
+func readJsonFromFile() {
 	const jsonFileName = "multipleMsgs.json"
-	filename := filepath.Join(binaryFilePath , jsonFileName)
-	data , err := js.ReadFile(filename)
+	filename := filepath.Join(binaryFilePath, jsonFileName)
+	data, err := js.ReadFile(filename)
 	if err != nil {
 		fmt.Errorf("ReadFile error: %s", err.Error())
 	}
-	fmt.Printf("读取文件%s,内容: %#v", filename, data )
+	fmt.Printf("读取文件%s,内容: %#v", filename, data)
 }
 
-func main(){
+func main() {
 	writeJson2File()
 	readJsonFromFile()
 	//loadDBConfig()
 }
 
-
-func loadDBConfig(){
+func loadDBConfig() {
 	fmt.Println("执行文件路径：", binaryFilePath)
 	//使用绝对路径，也可以使用相对路径
-	filename := filepath.Join(binaryFilePath,  "db_config.json" )
+	filename := filepath.Join(binaryFilePath, "db_config.json")
 	fmt.Println(filename)
 	fmt.Printf("配置文件信息: %#v", js.LoadConfiguration(filename))
 }
