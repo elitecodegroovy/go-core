@@ -1,4 +1,4 @@
-package gojson
+package json2struct
 
 import (
 	"io/ioutil"

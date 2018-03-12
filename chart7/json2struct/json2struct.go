@@ -1,100 +1,5 @@
-// gojson generates go struct defintions from JSON documents
-//
-// Reads from stdin and prints to stdout
-//
-// Example:
-// 	curl -s https://api.github.com/repos/chimeracoder/gojson | gojson -name=Repository
-//
-// Output:
-// 	package main
-//
-// 	type Repository struct {
-//     	ArchiveURL       string      `json:"archive_url"`
-//     	AssigneesURL     string      `json:"assignees_url"`
-//     	BlobsURL         string      `json:"blobs_url"`
-//     	BranchesURL      string      `json:"branches_url"`
-//     	CloneURL         string      `json:"clone_url"`
-//     	CollaboratorsURL string      `json:"collaborators_url"`
-//     	CommentsURL      string      `json:"comments_url"`
-//     	CommitsURL       string      `json:"commits_url"`
-//     	CompareURL       string      `json:"compare_url"`
-//     	ContentsURL      string      `json:"contents_url"`
-//     	ContributorsURL  string      `json:"contributors_url"`
-//     	CreatedAt        string      `json:"created_at"`
-//     	DefaultBranch    string      `json:"default_branch"`
-//     	Description      string      `json:"description"`
-//     	DownloadsURL     string      `json:"downloads_url"`
-//     	EventsURL        string      `json:"events_url"`
-//     	Fork             bool        `json:"fork"`
-//     	Forks            float64     `json:"forks"`
-//     	ForksCount       float64     `json:"forks_count"`
-//     	ForksURL         string      `json:"forks_url"`
-//     	FullName         string      `json:"full_name"`
-//     	GitCommitsURL    string      `json:"git_commits_url"`
-//     	GitRefsURL       string      `json:"git_refs_url"`
-//     	GitTagsURL       string      `json:"git_tags_url"`
-//     	GitURL           string      `json:"git_url"`
-//     	HasDownloads     bool        `json:"has_downloads"`
-//     	HasIssues        bool        `json:"has_issues"`
-//     	HasWiki          bool        `json:"has_wiki"`
-//     	Homepage         interface{} `json:"homepage"`
-//     	HooksURL         string      `json:"hooks_url"`
-//     	HtmlURL          string      `json:"html_url"`
-//     	ID               float64     `json:"id"`
-//     	IssueCommentURL  string      `json:"issue_comment_url"`
-//     	IssueEventsURL   string      `json:"issue_events_url"`
-//     	IssuesURL        string      `json:"issues_url"`
-//     	KeysURL          string      `json:"keys_url"`
-//     	LabelsURL        string      `json:"labels_url"`
-//     	Language         string      `json:"language"`
-//     	LanguagesURL     string      `json:"languages_url"`
-//     	MasterBranch     string      `json:"master_branch"`
-//     	MergesURL        string      `json:"merges_url"`
-//     	MilestonesURL    string      `json:"milestones_url"`
-//     	MirrorURL        interface{} `json:"mirror_url"`
-//     	Name             string      `json:"name"`
-//     	NetworkCount     float64     `json:"network_count"`
-//     	NotificationsURL string      `json:"notifications_url"`
-//     	OpenIssues       float64     `json:"open_issues"`
-//     	OpenIssuesCount  float64     `json:"open_issues_count"`
-//     	Owner            struct {
-//         	AvatarURL         string  `json:"avatar_url"`
-//         	EventsURL         string  `json:"events_url"`
-//         	FollowersURL      string  `json:"followers_url"`
-//         	FollowingURL      string  `json:"following_url"`
-//         	GistsURL          string  `json:"gists_url"`
-//         	GravatarID        string  `json:"gravatar_id"`
-//         	HtmlURL           string  `json:"html_url"`
-//         	ID                float64 `json:"id"`
-//         	Login             string  `json:"login"`
-//         	OrganizationsURL  string  `json:"organizations_url"`
-//         	ReceivedEventsURL string  `json:"received_events_url"`
-//         	ReposURL          string  `json:"repos_url"`
-//         	SiteAdmin         bool    `json:"site_admin"`
-//         	StarredURL        string  `json:"starred_url"`
-//         	SubscriptionsURL  string  `json:"subscriptions_url"`
-//         	Type              string  `json:"type"`
-//         	URL               string  `json:"url"`
-//     } `	json:"owner"`
-//     	Private         bool    `json:"private"`
-//     	PullsURL        string  `json:"pulls_url"`
-//     	PushedAt        string  `json:"pushed_at"`
-//     	Size            float64 `json:"size"`
-//     	SshURL          string  `json:"ssh_url"`
-//     	StargazersURL   string  `json:"stargazers_url"`
-//     	StatusesURL     string  `json:"statuses_url"`
-//     	SubscribersURL  string  `json:"subscribers_url"`
-//     	SubscriptionURL string  `json:"subscription_url"`
-//     	SvnURL          string  `json:"svn_url"`
-//     	TagsURL         string  `json:"tags_url"`
-//     	TeamsURL        string  `json:"teams_url"`
-//     	TreesURL        string  `json:"trees_url"`
-//     	UpdatedAt       string  `json:"updated_at"`
-//     	URL             string  `json:"url"`
-//     	Watchers        float64 `json:"watchers"`
-//     	WatchersCount   float64 `json:"watchers_count"`
-// 	}
-package gojson
+
+package json2struct
 
 import (
 	"bytes"
@@ -114,9 +19,7 @@ import (
 
 var ForceFloats bool
 
-// commonInitialisms is a set of common initialisms.
-// Only add entries that are highly unlikely to be non-initialisms.
-// For instance, "ID" is fine (Freudian code is rare), but "AND" is not.
+// 常用的缩略词集合
 var commonInitialisms = map[string]bool{
 	"API":   true,
 	"ASCII": true,
@@ -153,6 +56,7 @@ var commonInitialisms = map[string]bool{
 	"DB":    true,
 }
 
+// 数值的字母集合
 var intToWordMap = []string{
 	"zero",
 	"one",
@@ -168,6 +72,7 @@ var intToWordMap = []string{
 
 type Parser func(io.Reader) (interface{}, error)
 
+//解析JSON数据，以interface{}类型格式输出
 func ParseJson(input io.Reader) (interface{}, error) {
 	var result interface{}
 	if err := json.NewDecoder(input).Decode(&result); err != nil {
@@ -175,7 +80,7 @@ func ParseJson(input io.Reader) (interface{}, error) {
 	}
 	return result, nil
 }
-
+//解析YAML数据，以interface{}类型格式输出
 func ParseYaml(input io.Reader) (interface{}, error) {
 	var result interface{}
 	b, err := readFile(input)
@@ -188,6 +93,7 @@ func ParseYaml(input io.Reader) (interface{}, error) {
 	return result, nil
 }
 
+//读取文件input的内容，以[]byte输出
 func readFile(input io.Reader) ([]byte, error) {
 	buf := bytes.NewBuffer(nil)
 	_, err := io.Copy(buf, input)
@@ -197,8 +103,9 @@ func readFile(input io.Reader) ([]byte, error) {
 	return buf.Bytes(), nil
 }
 
-// Generate a struct definition given a JSON string representation of an object and a name structName.
-func Generate(input io.Reader, parser Parser, structName, pkgName string, tags []string, subStruct bool, convertFloats bool) ([]byte, error) {
+//产生一个结构定义：
+//实现JSON数据转化为结构定义
+func GenerateJSON(input io.Reader, parser Parser, structName, pkgName string, tags []string, subStruct bool, convertFloats bool) ([]byte, error) {
 	var subStructMap map[string]string
 	if subStruct {
 		subStructMap = make(map[string]string)
@@ -210,15 +117,14 @@ func Generate(input io.Reader, parser Parser, structName, pkgName string, tags [
 	if err != nil {
 		return nil, err
 	}
-	//json模式映射为Go类型：key为interface{}一般类型的map，key为string的map和数组类型
-	//步骤一：处理数组类型interface｛｝类型的数据
-	//步骤二：统一处理两个情况的JSON结构（key为interface{}一般类型的map，key为string的map）
+	//json数据映射为Go结构有三种数据类型：
+	// key为interface{}类型、key为字符串类型、key为泛化的数组类型[]interface{}
+	//处理步骤：
+	//步骤一，处理数组类型[]interface{}
+	//步骤二，统一处理key为interface{}或者字符串类型的情况
 	switch iresult := iresult.(type) {
-	case map[interface{}]interface{}:
-		result = convertKeysToStrings(iresult)
-	case map[string]interface{}:
-		result = iresult
 	case []interface{}:
+		//步骤一,处理数组类型[]interface{}类型的数据
 		src := fmt.Sprintf("package %s\n\ntype %s %s\n",
 			pkgName,
 			structName,
@@ -228,10 +134,15 @@ func Generate(input io.Reader, parser Parser, structName, pkgName string, tags [
 			err = fmt.Errorf("error formatting: %s, was formatting\n%s", err, src)
 		}
 		return formatted, err
+	case map[interface{}]interface{}:
+		//转化过程：统一key为strin值为interface{}的map类型
+		result = convertKeysToStrings(iresult)
+	case map[string]interface{}:
+		result = iresult
 	default:
 		return nil, fmt.Errorf("unexpected type: %T", iresult)
 	}
-
+	///步骤二,统一处理的数据类型类型--key为strin值为interface{}的map类型
 	src := fmt.Sprintf("package %s\ntype %s %s}",
 		pkgName,
 		structName,
@@ -353,21 +264,23 @@ func generateTypes(obj map[string]interface{}, structName string, tags []string,
 	return structure
 }
 
-// FmtFieldName formats a string as a struct key
-//
-// Example:
-// 	FmtFieldName("foo_id")
-// Output: FooID
+// 格式化结构字段的呈现形式。
+// e.g.
+// 	FmtFieldName("goo_id")
+//  Output: GooId
 func FmtFieldName(s string) string {
 	runes := []rune(s)
+	//case 1: 如果字段开头字符不是数字和字母的话，去除掉。
 	for len(runes) > 0 && !unicode.IsLetter(runes[0]) && !unicode.IsDigit(runes[0]) {
 		runes = runes[1:]
 	}
+	//case 1: 如果字段开头字符为空字符（没有任何字符），以“_”代替。
 	if len(runes) == 0 {
 		return "_"
 	}
 
 	s = stringifyFirstChar(string(runes))
+	//首字母大写算法
 	name := lintFieldName(s)
 	runes = []rune(name)
 	for i, c := range runes {
@@ -470,7 +383,7 @@ func lintFieldName(name string) string {
 
 // 数值的数据类型
 func typeForValue(value interface{}, structName string, tags []string, subStructMap map[string]string, convertFloats bool) string {
-	//JSON数组类型[]interface{}
+	//JSON数组类型，对应Go类是[]interface{}
 	if objects, ok := value.([]interface{}); ok {
 		types := make(map[reflect.Type]bool, 0)
 		for _, o := range objects {
@@ -494,8 +407,7 @@ func typeForValue(value interface{}, structName string, tags []string, subStruct
 	return v
 }
 
-// All numbers will initially be read as float64
-// If the number appears to be an integer value, use int instead
+// 以float64读取所有的数值，利用了Go的反射机制
 func disambiguateFloatInt(value interface{}) string {
 	const epsilon = .0001
 	vfloat := value.(float64)
@@ -506,7 +418,7 @@ func disambiguateFloatInt(value interface{}) string {
 	return reflect.TypeOf(value).Name()
 }
 
-// convert first character ints to strings
+// 转化第一个字符int到字符串
 func stringifyFirstChar(str string) string {
 	first := str[:1]
 

@@ -1,0 +1,20 @@
+package httpclient
+
+type Response struct {
+	Activities []struct {
+		ActivityID   int64       `json:"activityId"`
+		ActivityName string      `json:"activityName"`
+		ActivityURL  interface{} `json:"activityUrl"`
+		CreatedBy    string      `json:"createdBy"`
+		Description  string      `json:"description"`
+		EndTime      string      `json:"endTime"`
+		FreeTimes    int64       `json:"freeTimes"`
+		Online       bool        `json:"online"`
+		PublishedBy  string      `json:"publishedBy"`
+		StartTime    string      `json:"startTime"`
+		Status       string      `json:"status"`
+		UsedScore    int64       `json:"usedScore"`
+	} `json:"activities"`
+	Code string `json:"code"`
+	Msg  string `json:"msg"`
+}

@@ -1,0 +1,19 @@
+{
+  "msg": "成功",
+  "code": "100",
+  "activities": [
+	{
+	  "activityId": 3,
+	  "activityName": "活动庆典",
+	  "startTime": "2017-04-04 16:38:00",
+	  "endTime": "2019-05-04 23:38:00",
+	  "status": "开始",
+	  "description": "2016-05-04 16:38:00",
+	  "publishedBy": "Swisse",
+	  "usedScore": 20,
+	  "freeTimes": 1,
+	  "online": false,
+	  "activityUrl": null,
+	  "createdBy": "12516"
+	}]
+}

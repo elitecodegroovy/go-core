@@ -1,4 +1,4 @@
-package gojson
+package json2struct
 
 import (
 	"io/ioutil"
@@ -12,32 +12,32 @@ import (
 // It does not (yet) test for correctness of the end result
 func TestSimpleJson(t *testing.T) {
 	i := strings.NewReader(`{"foo" : "bar"}`)
-	if _, err := Generate(i, ParseJson, "TestStruct", "gojson", []string{"json"}, false, true); err != nil {
-		t.Error("Generate() error:", err)
+	if _, err := GenerateJSON(i, ParseJson, "TestStruct", "gojson", []string{"json"}, false, true); err != nil {
+		t.Error("GenerateJSON() error:", err)
 	}
 }
 
 // TestNullableJson tests that a null JSON value is handled properly
 func TestNullableJson(t *testing.T) {
 	i := strings.NewReader(`{"foo" : "bar", "baz" : null}`)
-	if _, err := Generate(i, ParseJson, "TestStruct", "gojson", []string{"json"}, false, true); err != nil {
-		t.Error("Generate() error:", err)
+	if _, err := GenerateJSON(i, ParseJson, "TestStruct", "gojson", []string{"json"}, false, true); err != nil {
+		t.Error("GenerateJSON() error:", err)
 	}
 }
 
 // TestSimpleArray tests that an array without conflicting types is handled correctly
 func TestSimpleArray(t *testing.T) {
 	i := strings.NewReader(`{"foo" : [{"bar": 24}, {"bar" : 42}]}`)
-	if _, err := Generate(i, ParseJson, "TestStruct", "gojson", []string{"json"}, false, true); err != nil {
-		t.Error("Generate() error:", err)
+	if _, err := GenerateJSON(i, ParseJson, "TestStruct", "gojson", []string{"json"}, false, true); err != nil {
+		t.Error("GenerateJSON() error:", err)
 	}
 }
 
 // TestInvalidFieldChars tests that a document with invalid field chars is handled correctly
 func TestInvalidFieldChars(t *testing.T) {
 	i := strings.NewReader(`{"f.o-o" : 42}`)
-	if _, err := Generate(i, ParseJson, "TestStruct", "gojson", []string{"json"}, false, true); err != nil {
-		t.Error("Generate() error:", err)
+	if _, err := GenerateJSON(i, ParseJson, "TestStruct", "gojson", []string{"json"}, false, true); err != nil {
+		t.Error("GenerateJSON() error:", err)
 	}
 }
 
@@ -80,7 +80,7 @@ func TestInferFloatInt(t *testing.T) {
 		t.Fatalf("error reading expected_floats.go.out: %s", err)
 	}
 
-	actual, err := Generate(f, ParseJson, "Stats", "gojson", []string{"json"}, false, true)
+	actual, err := GenerateJSON(f, ParseJson, "Stats", "gojson", []string{"json"}, false, true)
 	if err != nil {
 		t.Error(err)
 	}
@@ -104,7 +104,7 @@ func TestYamlNumbers(t *testing.T) {
 		t.Fatalf("error reading expected_numbers.go.out: %s", err)
 	}
 
-	actual, err := Generate(f, ParseYaml, "Stats", "gojson", []string{"yaml"}, false, false)
+	actual, err := GenerateJSON(f, ParseYaml, "Stats", "gojson", []string{"yaml"}, false, false)
 	if err != nil {
 		t.Error(err)
 	}
@@ -126,7 +126,7 @@ func TestExample(t *testing.T) {
 		t.Error("error reading expected_output_test.go", err)
 	}
 
-	actual, err := Generate(i, ParseJson, "User", "gojson", []string{"json"}, false, true)
+	actual, err := GenerateJSON(i, ParseJson, "User", "gojson", []string{"json"}, false, true)
 	if err != nil {
 		t.Error(err)
 	}
@@ -143,10 +143,10 @@ func TestFmtFieldName(t *testing.T) {
 	}
 
 	testCases := []TestCase{
-		{in: "foo_id", out: "FooID"},
-		{in: "fooId", out: "FooID"},
-		{in: "foo_url", out: "FooURL"},
-		{in: "foobar", out: "Foobar"},
+		{in: "foo_id", out: "GooID"},
+		{in: "fooId", out: "GooID"},
+		{in: "foo_url", out: "GooURL"},
+		{in: "foobar", out: "Goobar"},
 		{in: "url_sample", out: "URLSample"},
 		{in: "_id", out: "ID"},
 		{in: "__id", out: "ID"},
