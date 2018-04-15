@@ -65,27 +65,22 @@ type config struct {
 	clearOption bool
 }
 
-func main() {
-	if err := realMain(); err != nil {
-		fmt.Fprintln(os.Stderr, err.Error())
-		os.Exit(1)
-	}
-}
-
-func realMain() error {
+func process() error {
 	var (
-		// file flags
+		// vip flag: file flags
 		flagFile  = flag.String("file", "", "Filename to be parsed")
+
+		//vip flag: write result to file
 		flagWrite = flag.Bool("w", false,
 			"Write result to (source) file instead of stdout")
 		flagOutput = flag.String("format", "source", "Output format."+
 			"By default it's the whole file. Options: [source, json]")
-		flagModified = flag.Bool("modified", false, "read an archive of modified files from standard input")
-
+		flagModified = flag.Bool("modified", false,
+			"read an archive of modified files from standard input")
 		// processing modes
 		flagOffset = flag.Int("offset", 0,
 			"Byte offset of the cursor position inside a struct."+
-				"Can be anwhere from the comment until closing bracket")
+				"Can be anywhere from the comment until closing bracket")
 		flagLine = flag.String("line", "",
 			"Line number of the field or a range of line. i.e: 4 or 4,8")
 		flagStruct = flag.String("struct", "", "Struct name to be processed")
@@ -97,8 +92,10 @@ func realMain() error {
 			"Clear all tags")
 		flagAddTags = flag.String("add-tags", "",
 			"Adds tags for the comma separated list of keys."+
-				"Keys can contain a static value, i,e: json:foo")
-		flagOverride  = flag.Bool("override", false, "Override current tags when adding tags")
+				"Keys can contain a static value, i,e: json:goo")
+		flagOverride  = flag.Bool("override", false,
+			"Override current tags when adding tags")
+		//vip flag: tag rule name ,default is snakecase
 		flagTransform = flag.String("transform", "snakecase",
 			"Transform adds a transform rule when adding tags."+
 				" Current options: [snakecase, camelcase, lispcase]")
@@ -159,11 +156,13 @@ func realMain() error {
 		cfg.removeOptions = strings.Split(*flagRemoveOptions, ",")
 	}
 
+	//validate the settings
 	err := cfg.validate()
 	if err != nil {
 		return err
 	}
 
+	//get the ast.Node info
 	node, err := cfg.parse()
 	if err != nil {
 		return err
@@ -205,6 +204,9 @@ func (c *config) parse() (ast.Node, error) {
 		contents = fc
 	}
 
+	// ParseFile parses the source code of a single Go source file and returns
+	// the corresponding ast.File node. The source code may be provided via
+	// the filename of the source file, or via the src parameter.
 	return parser.ParseFile(c.fset, c.file, contents, parser.ParseComments)
 }
 
@@ -222,6 +224,7 @@ func (c *config) findSelection(node ast.Node) (int, int, error) {
 	}
 }
 
+//core feature: processing the fieldName and tagValue
 func (c *config) process(fieldName, tagVal string) (string, error) {
 	var tag string
 	if tagVal != "" {
@@ -237,20 +240,25 @@ func (c *config) process(fieldName, tagVal string) (string, error) {
 		return "", err
 	}
 
+	//option 1: remove tags
 	tags = c.removeTags(tags)
+	//option 2: remove tag options settings
 	tags, err = c.removeTagOptions(tags)
 	if err != nil {
 		return "", err
 	}
 
+	//option 3: clear tag
 	tags = c.clearTags(tags)
+	//option 4: clear options
 	tags = c.clearOptions(tags)
 
+	//core feature: add tag opts
 	tags, err = c.addTags(fieldName, tags)
 	if err != nil {
 		return "", err
 	}
-
+	//core feature: add tag options settings
 	tags, err = c.addTagOptions(tags)
 	if err != nil {
 		return "", err
@@ -654,7 +662,7 @@ func (c *config) rewrite(node ast.Node, start, end int) (ast.Node, error) {
 	return node, errs
 }
 
-// validate validates whether the config is valid or not
+// validate whether the config is valid or not
 func (c *config) validate() error {
 	if c.file == "" {
 		return errors.New("no file is passed")
@@ -704,6 +712,14 @@ func (r *rewriteErrors) Append(err error) {
 	if err == nil {
 		return
 	}
-
 	r.errs = append(r.errs, err)
+}
+
+
+//application programming's entrance
+func main() {
+	if err := process(); err != nil {
+		fmt.Fprintln(os.Stderr, err.Error())
+		os.Exit(1)
+	}
 }
