@@ -7,7 +7,7 @@ import (
 	"golang.org/x/net/context"
 	"google.golang.org/grpc"
 
-	pb "github.com/elitecodegroovy/gmessage/apps/grpc/customer"
+	pb "github.com/elitecodegroovy/go-core/chart9/grpc/customer"
 )
 
 const (
@@ -15,7 +15,7 @@ const (
 )
 
 // createCustomer calls the RPC method CreateCustomer of CustomerServer
-func createCustomer(client pb.CustomerClient, customerReq *pb.CustomerRequest) {
+func createCustomer(client pb.CustomerServiceClient, customerReq *pb.CustomerRequest) {
 	resp, err := client.CreateCustomer(context.Background(), customerReq)
 	if err != nil {
 		log.Fatalf("Could not create Customer: %v", err)
@@ -26,7 +26,7 @@ func createCustomer(client pb.CustomerClient, customerReq *pb.CustomerRequest) {
 }
 
 // getCustomers calls the RPC method GetCustomers of CustomerServer
-func getCustomers(client pb.CustomerClient, filter *pb.CustomerFilter) {
+func getCustomers(client pb.CustomerServiceClient, filter *pb.CustomerFilter) {
 	// calling the streaming API
 	stream, err := client.GetCustomers(context.Background(), filter)
 	if err != nil {
@@ -40,7 +40,8 @@ func getCustomers(client pb.CustomerClient, filter *pb.CustomerFilter) {
 		if err != nil {
 			log.Fatalf("%v.GetCustomers(_) = _, %v", client, err)
 		}
-		log.Printf("Customer: %v", customer)
+		log.Printf("消费者：: %v", customer)
+		log.Printf("首选地址的所在城市: %v", customer.Addresses[0].City)
 	}
 }
 func main() {
@@ -51,26 +52,26 @@ func main() {
 	}
 	defer conn.Close()
 	// Creates a new CustomerClient
-	client := pb.NewCustomerClient(conn)
+	client := pb.NewCustomerServiceClient(conn)
 
 	customer := &pb.CustomerRequest{
 		Id:    101,
-		Name:  "Shiju Varghese",
-		Email: "shiju@xyz.com",
-		Phone: "732-757-2923",
+		Name:  "Liu Jigang",
+		Email: "elite_jigang@163.com",
+		Phone: "15914313549",
 		Addresses: []*pb.CustomerRequest_Address{
 			&pb.CustomerRequest_Address{
-				Street:            "1 Mission Street",
-				City:              "San Francisco",
-				State:             "CA",
-				Zip:               "94105",
+				Street:            "天河区体育中心中信大厦",
+				City:              "广州市",
+				State:             "广东省",
+				Zip:               "12516",
 				IsShippingAddress: false,
 			},
 			&pb.CustomerRequest_Address{
-				Street:            "Greenfield",
-				City:              "Kochi",
-				State:             "KL",
-				Zip:               "68356",
+				Street:            "天河区珠江新城IFC",
+				City:              "广州市",
+				State:             "广东省",
+				Zip:               "12517",
 				IsShippingAddress: true,
 			},
 		},
@@ -81,15 +82,15 @@ func main() {
 
 	customer = &pb.CustomerRequest{
 		Id:    102,
-		Name:  "Irene Rose",
-		Email: "irene@xyz.com",
-		Phone: "732-757-2924",
+		Name:  "ZhangXiaolong",
+		Email: "zhangXiaolong@tencent.com",
+		Phone: "139155988",
 		Addresses: []*pb.CustomerRequest_Address{
 			&pb.CustomerRequest_Address{
-				Street:            "1 Mission Street",
-				City:              "San Francisco",
-				State:             "CA",
-				Zip:               "94105",
+				Street:            "天河区珠江新城",
+				City:               "广州市",
+				State:              "广东省",
+				Zip:               "12519",
 				IsShippingAddress: true,
 			},
 		},
