@@ -4,8 +4,8 @@
 package customer
 
 /*
-use proto version 3.6.0
-field type definition, please referring to https://developers.google.com/protocol-buffers/docs/proto3
+使用的proto 版本号：3.6.0
+更多的类型信息，请参考地址 https://developers.google.com/protocol-buffers/docs/proto3
 */
 
 import proto "github.com/golang/protobuf/proto"
@@ -28,14 +28,14 @@ var _ = math.Inf
 // proto package needs to be updated.
 const _ = proto.ProtoPackageIsVersion2 // please upgrade the proto package
 
-// Request message for creating a new customer
+// 定义消息请求的实例对象CustomerRequest
 type CustomerRequest struct {
+	// Customer关键字字段.
 	Id    int32  `protobuf:"varint,1,opt,name=id,proto3" json:"id,omitempty"`
 	Name  string `protobuf:"bytes,2,opt,name=name,proto3" json:"name,omitempty"`
 	Email string `protobuf:"bytes,3,opt,name=email,proto3" json:"email,omitempty"`
 	Phone string `protobuf:"bytes,4,opt,name=phone,proto3" json:"phone,omitempty"`
-	// Each element in a repeated field requires re-encoding the tag number,
-	// so repeated fields are particularly good candidates for this optimization.
+	// 定义重复字段的个数
 	Addresses            []*CustomerRequest_Address `protobuf:"bytes,5,rep,name=addresses,proto3" json:"addresses,omitempty"`
 	XXX_NoUnkeyedLiteral struct{}                   `json:"-"`
 	XXX_unrecognized     []byte                     `json:"-"`
@@ -46,7 +46,7 @@ func (m *CustomerRequest) Reset()         { *m = CustomerRequest{} }
 func (m *CustomerRequest) String() string { return proto.CompactTextString(m) }
 func (*CustomerRequest) ProtoMessage()    {}
 func (*CustomerRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_customer_47a667b2c36707f0, []int{0}
+	return fileDescriptor_customer_35842bd900f8cc1d, []int{0}
 }
 func (m *CustomerRequest) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_CustomerRequest.Unmarshal(m, b)
@@ -116,7 +116,7 @@ func (m *CustomerRequest_Address) Reset()         { *m = CustomerRequest_Address
 func (m *CustomerRequest_Address) String() string { return proto.CompactTextString(m) }
 func (*CustomerRequest_Address) ProtoMessage()    {}
 func (*CustomerRequest_Address) Descriptor() ([]byte, []int) {
-	return fileDescriptor_customer_47a667b2c36707f0, []int{0, 0}
+	return fileDescriptor_customer_35842bd900f8cc1d, []int{0, 0}
 }
 func (m *CustomerRequest_Address) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_CustomerRequest_Address.Unmarshal(m, b)
@@ -171,6 +171,7 @@ func (m *CustomerRequest_Address) GetIsShippingAddress() bool {
 	return false
 }
 
+// 定义消息响应的实例对象CustomerResponse
 type CustomerResponse struct {
 	Id                   int32    `protobuf:"varint,1,opt,name=id,proto3" json:"id,omitempty"`
 	Success              bool     `protobuf:"varint,2,opt,name=success,proto3" json:"success,omitempty"`
@@ -183,7 +184,7 @@ func (m *CustomerResponse) Reset()         { *m = CustomerResponse{} }
 func (m *CustomerResponse) String() string { return proto.CompactTextString(m) }
 func (*CustomerResponse) ProtoMessage()    {}
 func (*CustomerResponse) Descriptor() ([]byte, []int) {
-	return fileDescriptor_customer_47a667b2c36707f0, []int{1}
+	return fileDescriptor_customer_35842bd900f8cc1d, []int{1}
 }
 func (m *CustomerResponse) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_CustomerResponse.Unmarshal(m, b)
@@ -217,6 +218,7 @@ func (m *CustomerResponse) GetSuccess() bool {
 	return false
 }
 
+// 定义消息过滤的实例对象CustomerFilter
 type CustomerFilter struct {
 	Keyword              string   `protobuf:"bytes,1,opt,name=keyword,proto3" json:"keyword,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
@@ -228,7 +230,7 @@ func (m *CustomerFilter) Reset()         { *m = CustomerFilter{} }
 func (m *CustomerFilter) String() string { return proto.CompactTextString(m) }
 func (*CustomerFilter) ProtoMessage()    {}
 func (*CustomerFilter) Descriptor() ([]byte, []int) {
-	return fileDescriptor_customer_47a667b2c36707f0, []int{2}
+	return fileDescriptor_customer_35842bd900f8cc1d, []int{2}
 }
 func (m *CustomerFilter) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_CustomerFilter.Unmarshal(m, b)
@@ -274,9 +276,9 @@ const _ = grpc.SupportPackageIsVersion4
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://godoc.org/google.golang.org/grpc#ClientConn.NewStream.
 type CustomerServiceClient interface {
-	// Get all Customers with filter - A server-to-client streaming RPC.
+	// 使用过滤规则获取所有消费信息： 服务端到客户端的流RPC
 	GetCustomers(ctx context.Context, in *CustomerFilter, opts ...grpc.CallOption) (CustomerService_GetCustomersClient, error)
-	// Create a new Customer - A simple RPC
+	// 创建一个新的消费者：一个简单的RPC
 	CreateCustomer(ctx context.Context, in *CustomerRequest, opts ...grpc.CallOption) (*CustomerResponse, error)
 }
 
@@ -331,9 +333,9 @@ func (c *customerServiceClient) CreateCustomer(ctx context.Context, in *Customer
 
 // CustomerServiceServer is the server API for CustomerService service.
 type CustomerServiceServer interface {
-	// Get all Customers with filter - A server-to-client streaming RPC.
+	// 使用过滤规则获取所有消费信息： 服务端到客户端的流RPC
 	GetCustomers(*CustomerFilter, CustomerService_GetCustomersServer) error
-	// Create a new Customer - A simple RPC
+	// 创建一个新的消费者：一个简单的RPC
 	CreateCustomer(context.Context, *CustomerRequest) (*CustomerResponse, error)
 }
 
@@ -399,9 +401,9 @@ var _CustomerService_serviceDesc = grpc.ServiceDesc{
 	Metadata: "customer.proto",
 }
 
-func init() { proto.RegisterFile("customer.proto", fileDescriptor_customer_47a667b2c36707f0) }
+func init() { proto.RegisterFile("customer.proto", fileDescriptor_customer_35842bd900f8cc1d) }
 
-var fileDescriptor_customer_47a667b2c36707f0 = []byte{
+var fileDescriptor_customer_35842bd900f8cc1d = []byte{
 	// 333 bytes of a gzipped FileDescriptorProto
 	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0x74, 0x92, 0xcf, 0x4a, 0xfb, 0x40,
 	0x10, 0xc7, 0xbb, 0x69, 0xd3, 0x3f, 0xf3, 0xfb, 0x11, 0xeb, 0x20, 0xb2, 0xe6, 0x14, 0x73, 0x0a,

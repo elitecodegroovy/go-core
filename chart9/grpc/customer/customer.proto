@@ -1,20 +1,21 @@
 syntax = "proto3";
-// use proto version 3.6.0
-//field type definition, please referring to https://developers.google.com/protocol-buffers/docs/proto3
+// 使用的proto 版本号：3.6.0
+//更多的类型信息，请参考地址 https://developers.google.com/protocol-buffers/docs/proto3
 package customer;
 
 
-// The Customer service definition.
+// 消费者服务定义.
 service CustomerService {
-  // Get all Customers with filter - A server-to-client streaming RPC.
+  // 使用过滤规则获取所有消费信息： 服务端到客户端的流RPC
   rpc GetCustomers(CustomerFilter) returns (stream CustomerRequest) {}
-  // Create a new Customer - A simple RPC
+  // 创建一个新的消费者：一个简单的RPC
   rpc CreateCustomer (CustomerRequest) returns (CustomerResponse) {}
 }
 
-// Request message for creating a new customer
+// 定义消息请求的实例对象CustomerRequest
 message CustomerRequest {
-  int32 id = 1;  // Unique ID number for a Customer.
+  // Customer关键字字段.
+  int32 id = 1;
   string name = 2;
   string email = 3;
   string phone= 4;
@@ -26,21 +27,26 @@ message CustomerRequest {
     string zip = 4;
     bool isShippingAddress = 5;
   }
-  // Each element in a repeated field requires re-encoding the tag number,
-  //so repeated fields are particularly good candidates for this optimization.
+  //定义重复字段的个数
   repeated Address addresses = 5;
-  //repeated :If a field is repeated, the field may be repeated any number of times (including zero).
-  //The order of the repeated values will be preserved in the protocol buffer. Think of repeated fields as dynamically sized arrays.
+   // Each element in a repeated field requires re-encoding the tag number,
+   //so repeated fields are particularly good candidates for this optimization.
+   //repeated :If a field is repeated, the field may be repeated any number of times (including zero).
+   //The order of the repeated values will be preserved in the protocol buffer. Think of repeated fields as dynamically sized arrays.
 }
 
+// 定义消息响应的实例对象CustomerResponse
 message CustomerResponse {
   int32 id = 1;
   bool success = 2;
 }
+
+// 定义消息过滤的实例对象CustomerFilter
 message CustomerFilter {
   string keyword = 1;
 }
 
-//complie cmd:
+//complie model cmd:
 // protoc -I=$SRC_DIR --go_out=$DST_DIR $SRC_DIR/addressbook.proto
+//e.g.:
 // demo : protoc -I customer/ customer/customer.proto --go_out=plugins=grpc:customer

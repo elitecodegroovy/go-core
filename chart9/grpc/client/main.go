@@ -14,8 +14,8 @@ const (
 	address = "localhost:50051"
 )
 
-// createCustomer calls the RPC method CreateCustomer of CustomerServer
-func createCustomer(client pb.CustomerServiceClient, customerReq *pb.CustomerRequest) {
+// 通过调用RPC方法CreateCustomer添加消费者
+func addCustomer(client pb.CustomerServiceClient, customerReq *pb.CustomerRequest) {
 	resp, err := client.CreateCustomer(context.Background(), customerReq)
 	if err != nil {
 		log.Fatalf("Could not create Customer: %v", err)
@@ -25,12 +25,12 @@ func createCustomer(client pb.CustomerServiceClient, customerReq *pb.CustomerReq
 	}
 }
 
-// getCustomers calls the RPC method GetCustomers of CustomerServer
-func getCustomers(client pb.CustomerServiceClient, filter *pb.CustomerFilter) {
+// 通过指定的过滤条件CustomerFilter作为参数来查询消费者信息
+func queryCustomers(client pb.CustomerServiceClient, filter *pb.CustomerFilter) {
 	// calling the streaming API
 	stream, err := client.GetCustomers(context.Background(), filter)
 	if err != nil {
-		log.Fatalf("Error on get customers: %v", err)
+		log.Fatalf("RPC GetCustomers 异常: %v", err)
 	}
 	for {
 		customer, err := stream.Recv()
@@ -44,6 +44,8 @@ func getCustomers(client pb.CustomerServiceClient, filter *pb.CustomerFilter) {
 		log.Printf("首选地址的所在城市: %v", customer.Addresses[0].City)
 	}
 }
+
+//程序入口
 func main() {
 	// Set up a connection to the gRPC server.
 	conn, err := grpc.Dial(address, grpc.WithInsecure())
@@ -56,7 +58,7 @@ func main() {
 
 	customer := &pb.CustomerRequest{
 		Id:    101,
-		Name:  "Liu Jigang",
+		Name:  "刘继刚",
 		Email: "elite_jigang@163.com",
 		Phone: "15914313549",
 		Addresses: []*pb.CustomerRequest_Address{
@@ -78,11 +80,11 @@ func main() {
 	}
 
 	// Create a new customer
-	createCustomer(client, customer)
+	addCustomer(client, customer)
 
 	customer = &pb.CustomerRequest{
 		Id:    102,
-		Name:  "ZhangXiaolong",
+		Name:  "李强",
 		Email: "zhangXiaolong@tencent.com",
 		Phone: "139155988",
 		Addresses: []*pb.CustomerRequest_Address{
@@ -97,8 +99,8 @@ func main() {
 	}
 
 	// Create a new customer
-	createCustomer(client, customer)
+	addCustomer(client, customer)
 	// Filter with an empty Keyword
 	filter := &pb.CustomerFilter{Keyword: ""}
-	getCustomers(client, filter)
+	queryCustomers(client, filter)
 }

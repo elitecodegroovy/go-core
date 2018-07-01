@@ -21,15 +21,16 @@ type server struct {
 	savedCustomers []*pb.CustomerRequest
 }
 
-// CreateCustomer creates a new Customer
+
 func (s *server) CreateCustomer(ctx context.Context, in *pb.CustomerRequest) (*pb.CustomerResponse, error) {
 	log.Output(2, fmt.Sprintf("req: %v", in))
+	//类型为CustomerRequest的数组保存请求的Customer对象
 	s.savedCustomers = append(s.savedCustomers, in)
-	//TODO ...handle all data with database or NoSQL server.
+	//TODO ...可以将数据持久化到关系型数据库或者NoSQL数据库.
 	return &pb.CustomerResponse{Id: in.Id, Success: true}, nil
 }
 
-// GetCustomers returns all customers by given filter
+// 对接口CustomerServiceServer方法GetCustomers的实现。
 func (s *server) GetCustomers(filter *pb.CustomerFilter, stream pb.CustomerService_GetCustomersServer) error {
 	for _, customer := range s.savedCustomers {
 		if filter.Keyword != "" {
@@ -37,6 +38,7 @@ func (s *server) GetCustomers(filter *pb.CustomerFilter, stream pb.CustomerServi
 				continue
 			}
 		}
+		//以流的形式发送给客户端，客户端也使用流的模式进行接受。
 		if err := stream.Send(customer); err != nil {
 			return err
 		}
@@ -45,12 +47,16 @@ func (s *server) GetCustomers(filter *pb.CustomerFilter, stream pb.CustomerServi
 }
 
 func main() {
+	//指定我们想监听的端口
 	lis, err := net.Listen("tcp", port)
+	//端口被占用或者其它可能的异常原因
 	if err != nil {
 		log.Fatalf("failed to listen: %v", err)
 	}
-	// Creates a new gRPC server
+	// 创建一个RPC服务器
 	s := grpc.NewServer()
+	//注册服务
 	pb.RegisterCustomerServiceServer(s, &server{})
+	//阻塞等待直到进程被杀死或者stop()被调用
 	s.Serve(lis)
 }
