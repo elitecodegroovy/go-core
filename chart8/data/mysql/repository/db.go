@@ -24,7 +24,7 @@ const (
 var (
 	engine *xorm.Engine
 	dataSourceName = flag.String("mysql_driver",
-		"nsmjpt:mjpt@tcp(112.74.17.193:3306)/grafana?charset=utf8", MysqlDatasource)
+		"nsmjpt:mjpt@tcp(192.168.1.225:3306)/grafana?charset=utf8", MysqlDatasource)
 )
 
 func usage() {
