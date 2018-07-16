@@ -21,7 +21,7 @@ func main() {
 	grpcCaller := proto.NewGRPCService("grpc", service.Client())
 
 	// 调用rpc函数
-	t1 := time.Now();
+	t1 := time.Now()
 	rsp, err := grpcCaller.CallGRPC(context.TODO(), &proto.GRPCReq{Name: "John", ReqSeq: "000120180712"})
 	if err != nil {
 		log.Fatal(err)

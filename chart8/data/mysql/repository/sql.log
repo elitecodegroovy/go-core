@@ -1,0 +1,3 @@
+[xorm] [info]  2018/07/14 16:25:35.446674 [SQL] SELECT `id`, `username`, `birthday`, `sex`, `phone`, `address` FROM `customer`
+[xorm] [info]  2018/07/14 16:25:35.493648 [SQL] SELECT `id`, `username`, `birthday`, `sex`, `phone`, `address` FROM `customer` WHERE ( id > ? AND sex = ?) LIMIT 3 OFFSET 2 []interface {}{5, "男"}
+[xorm] [info]  2018/07/14 16:25:35.514637 [SQL] SELECT `id`, `username`, `birthday`, `sex`, `phone`, `address` FROM `customer` WHERE `username` IN (?,?) []interface {}{"王梦茹", "吴梦如"}

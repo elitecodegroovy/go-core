@@ -1,0 +1,5 @@
+{
+  "MaxIdleConns":5,
+  "MaxOpenConns":120,
+  "showSQL":true
+}
