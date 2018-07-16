@@ -121,6 +121,8 @@ func UpdatePhoneNOByCustomerId(customer *Customer)(int64, error){
 	return engine.Id(customer.Id).Update(customer)
 }
 
+
+//update opt
 func UpdateCustomerByMap(id int64, props map[string]interface{})(int64, error){
 	return engine.Table(new(Customer)).ID(id).Update(props)
 }
